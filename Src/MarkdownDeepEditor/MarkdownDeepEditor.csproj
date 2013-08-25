@@ -65,6 +65,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\Conversion.cs" />
     <Compile Include="TextFormatter\DefaultTextFormatterAttribute.cs" />
     <Compile Include="TextFormatter\XiliumMarkdownDeepFormatter.cs" />
     <Compile Include="TextFormatter\TextFormatterBase.cs" />

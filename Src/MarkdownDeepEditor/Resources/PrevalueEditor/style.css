@@ -3,9 +3,9 @@
 html[xmlns] .clearfix{display:block;}
 * html .clearfix{height:1%;}
 .settings{}
-.settings .row{margin-top:5px;margin-bottom:5px;}
-.settings .label{float:left;width:120px;margin-right:10px;}
-.settings .field{float:left;}
-.settings .description{clear:left;color:#666;float:left;font-style:italic;margin:3px 0 10px 130px;}
-.settings .description a{border-bottom:1px dotted #666;color:#666;text-decoration:none;}
-.settings .description a:hover{border-bottom:1px dotted #630;color:#630;}
+.settings .row	{ margin:8px 0; }
+.settings .label	{float:left;width:120px;margin-right:10px;}
+.settings .field	{float:left;}
+.settings .description	{clear:left;color:#666;float:left;font-style:italic;margin:3px 0 10px 130px;}
+.settings .description a		{border-bottom:1px dotted #666;color:#666;text-decoration:none;}
+.settings .description a:hover	{border-bottom:1px dotted #630;color:#630;}

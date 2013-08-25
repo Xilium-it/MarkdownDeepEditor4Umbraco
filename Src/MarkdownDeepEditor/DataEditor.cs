@@ -66,10 +66,6 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 			get {
 				if (this.m_Data == null) {
 					switch (this.Options.OutputFormat) {
-						case Options.OutputFormats.HTML:
-							this.m_Data = new TextData(this);
-							break;
-
 						case Options.OutputFormats.XML:
 							this.m_Data = new XmlData(this);
 							break;
@@ -78,13 +74,10 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 							this.m_Data = new DefaultData(this);
 							break;
 
+						case Options.OutputFormats.HTML:
 						default:
 							this.m_Data = new TextData(this);
 							break;
-					}
-
-					if (this.Options.SaveAsXml) {
-						this.m_Data = new XmlData(this);
 					}
 				}
 

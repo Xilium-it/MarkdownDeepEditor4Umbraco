@@ -31,6 +31,7 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 		/// Initializes a new instance of the <see cref="WmdControl"/> class.
 		/// </summary>
 		public WmdControl() {
+			this.TextBoxControl = new TextBox();
 		}
 
 		/// <summary>
@@ -44,17 +45,8 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 		/// </summary>
 		/// <value>The text for the TextBoxControl.</value>
 		public string Text {
-			get {
-				return this.TextBoxControl.Text;
-			}
-
-			set {
-				if (this.TextBoxControl == null) {
-					this.TextBoxControl = new TextBox();
-				}
-
-				this.TextBoxControl.Text = value;
-			}
+			get { return this.TextBoxControl.Text; }
+			set { this.TextBoxControl.Text = value; }
 		}
 
 		/// <summary>
@@ -81,7 +73,7 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 			base.OnLoad(e);
 
 			// check if WMD Editor has been enabled.
-			if (this.Options.EnableWmd) {
+			if (this.Options.EnableUIEditor) {
 				// adds the client dependencies.
 				this.AddResourceToClientDependency("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor.mdd_styles.css", ClientDependencyType.Css);
 				this.AddResourceToClientDependency("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor_custom.mdd_styles.css", ClientDependencyType.Css);
@@ -124,7 +116,7 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 			writer.RenderEndTag(); // div.MarkdownDeepTextBox
 
 			// check if WMD Editor has been enabled.
-			if (this.Options.EnableWmd) {
+			if (this.Options.EnableUIEditor) {
 				switch (2) {
 					case 1:
 						const char QUOTE = '\'';
@@ -134,11 +126,14 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 						var markeditOptions = new StringBuilder("{");
 
 						// history option
+						/*
 						if (!this.Options.EnableHistory) {
 							markeditOptions.Append("'history': false, ");
 						}
+						*/
 
 						// preview option
+						/*
 						markeditOptions.Append("'preview': ");
 						if (!string.IsNullOrEmpty(this.Options.SelectedPreview)) {
 							markeditOptions
@@ -148,27 +143,32 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 						} else {
 							markeditOptions.Append("false");
 						}
+						*/
 
 						markeditOptions
 							.Append(", 'toolbar': { ")
 							.Append("'layout': 'bold italic | link quote code image | numberlist bulletlist heading line");
 
 						// reference the help button
+						/*
 						if (!string.IsNullOrEmpty(this.Options.HelpUrl)) {
 							markeditOptions.Append(" | help");
 						}
+						*/
 
 						markeditOptions
 							.Append("', ")
 							.Append("'buttons' : [ ");
 
 						// add the help button
+						/*
 						if (!string.IsNullOrEmpty(this.Options.HelpUrl)) {
 							markeditOptions
 								.Append("{ 'id' : 'help', 'css' : 'help', 'tip' : 'Markdown Syntax Help', 'click' : function(){ window.open('")
 								.Append(this.Options.HelpUrl)
 								.Append("'); }, 'mouseover' : function(){}, 'mouseout' : function(){} }");
 						}
+						*/
 
 						markeditOptions
 							.Append(" ] }")
@@ -186,9 +186,17 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 						strJS.Append("\n<script type=\"text/javascript\">");
 						strJS.Append("\njQuery(window).load(function(){ $(\"#" + this.TextBoxControl.ClientID + "\").MarkdownDeep({");
 
-
 						// Set MarkdownDeep editor options
 						strJS.Append("help_location: \"" + this.GetWebResourceUrl("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor.mdd_help.html") + "\"");
+						strJS.Append(", SafeMode: \"" + this.Options.SafeMode.ToJson() + "\"");
+						strJS.Append(", ExtraMode: \"" + this.Options.ExtraMode.ToJson() + "\"");
+						strJS.Append(", MarkdownInHtml: \"" + this.Options.MarkdownInHtml.ToJson() + "\"");
+						strJS.Append(", AutoHeadingIDs: \"" + this.Options.AutoHeadingIDs.ToJson() + "\"");
+						strJS.Append(", NewWindowForExternalLinks: \"" + this.Options.NewWindowForExternalLinks.ToJson() + "\"");
+						strJS.Append(", NewWindowForLocalLinks: \"" + this.Options.NewWindowForLocalLinks.ToJson() + "\"");
+						strJS.Append(", NoFollowLinks: \"" + this.Options.NoFollowLinks.ToJson() + "\"");
+						strJS.Append(", disableAutoIndent: \"" + this.Options.DisableAutoIndent.ToJson() + "\"");
+						strJS.Append(", disableTabHandling: \"" + this.Options.DisableTabHandling.ToJson() + "\"");
 
 						strJS.Append(" }); });");
 						strJS.Append("\n</script>");

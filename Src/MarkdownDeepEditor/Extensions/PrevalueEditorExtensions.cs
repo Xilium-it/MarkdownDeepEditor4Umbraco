@@ -1,4 +1,5 @@
-﻿using System.Web.UI;
+﻿using System;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace Xilium.MarkdownDeepEditor4Umbraco.Extensions
@@ -42,9 +43,12 @@ namespace Xilium.MarkdownDeepEditor4Umbraco.Extensions
 			writer.AddAttribute(HtmlTextWriterAttribute.Class, "field");
 			writer.RenderBeginTag(HtmlTextWriterTag.Div); // start 'field'
 
+			int controlsCount = 0;
 			foreach (Control control in controls)
 			{
+				if (controlsCount > 0) writer.Write("<br/>");
 				control.RenderControl(writer);
+				controlsCount++;
 			}
 
 			writer.RenderEndTag(); // end 'field'
@@ -61,6 +65,27 @@ namespace Xilium.MarkdownDeepEditor4Umbraco.Extensions
 			}
 
 			writer.RenderEndTag(); // end 'row'
+		}
+
+		public static int ParseToInt(this string value, int fallbackValue) {
+			int fReturn;
+			if (int.TryParse(value, out fReturn)) return fReturn;
+			return fallbackValue;
+		}
+
+		public static T ParseToEnum<T>(this string value, T fallbackValue) where T : struct, System.IConvertible {
+			if (typeof (T).IsEnum == false) {
+				throw new ArgumentException("T must be an enumerated type");
+			}
+
+			T fReturn;
+			try {
+				fReturn = (T)Enum.Parse(typeof(T), value, true);
+			}
+			catch (Exception ex) {
+				fReturn = fallbackValue;
+			}
+			return fReturn;
 		}
 	}
 }

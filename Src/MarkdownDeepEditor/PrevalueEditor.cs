@@ -9,13 +9,11 @@ using umbraco.interfaces;
 
 [assembly: WebResource("Xilium.MarkdownDeepEditor4Umbraco.Resources.PrevalueEditor.style.css", "text/css", PerformSubstitution = true)]
 
-namespace Xilium.MarkdownDeepEditor4Umbraco
-{
+namespace Xilium.MarkdownDeepEditor4Umbraco {
 	/// <summary>
 	/// The Prevalue Editor for the Markdown data-type.
 	/// </summary>
-	public sealed class PrevalueEditor : WebControl, IDataPrevalue
-	{
+	public sealed class PrevalueEditor : WebControl, IDataPrevalue {
 		/// <summary>
 		/// The underlying base data-type.
 		/// </summary>
@@ -27,19 +25,19 @@ namespace Xilium.MarkdownDeepEditor4Umbraco
 		private static readonly object m_Locker = new object();
 
 		/// <summary>
-		/// The CheckBox for enabling editing history on the WMD editor.
+		/// Current options
 		/// </summary>
-		private CheckBox EnableHistory;
+		private Options Options;
 
 		/// <summary>
 		/// The CheckBox for enabling the WMD Editor.
 		/// </summary>
-		private CheckBox EnableWmd;
+		private CheckBox EnableUIEditor;
 
 		/// <summary>
 		/// The RadioButtonList for the preview settings.
 		/// </summary>
-		private RadioButtonList PreviewOptions;
+		private RadioButtonList ShowPreview;
 
 		/// <summary>
 		/// The RadioButtonList for the output formats.
@@ -47,19 +45,60 @@ namespace Xilium.MarkdownDeepEditor4Umbraco
 		private RadioButtonList OutputFormats;
 
 		/// <summary>
+		/// The TextBox control for the width of the data-type.
+		/// </summary>
+		private TextBox TextBoxWidth;
+
+		/// <summary>
 		/// The TextBox control for the height of the data-type.
 		/// </summary>
 		private TextBox TextBoxHeight;
 
 		/// <summary>
-		/// The TextBox control for the help URL.
+		/// The CheckBox for enabling the SafeMode transform option.
 		/// </summary>
-		private TextBox TextBoxHelpUrl;
+		private CheckBox SafeMode;
 
 		/// <summary>
-		/// The TextBox control for the width of the data-type.
+		/// The CheckBox for enabling the ExtraMode transform option.
 		/// </summary>
-		private TextBox TextBoxWidth;
+		private CheckBox ExtraMode;
+
+		/// <summary>
+		/// The CheckBox for enabling the MarkdownInHtml transform option.
+		/// </summary>
+		private CheckBox MarkdownInHtml;
+
+		/// <summary>
+		/// The CheckBox for enabling the AutoHeadingIDs transform option.
+		/// </summary>
+		private CheckBox AutoHeadingIDs;
+
+		/// <summary>
+		/// The CheckBox for enabling the NewWindowForExternalLinks transform option.
+		/// </summary>
+		private CheckBox NewWindowForExternalLinks;
+
+		/// <summary>
+		/// The CheckBox for enabling the NewWindowForLocalLinks transform option.
+		/// </summary>
+		private CheckBox NewWindowForLocalLinks;
+
+		/// <summary>
+		/// The CheckBox for enabling the NoFollowLinks transform option.
+		/// </summary>
+		private CheckBox NoFollowLinks;
+
+		/// <summary>
+		/// The CheckBox for enabling the DisableAutoIndent transform option.
+		/// </summary>
+		private CheckBox DisableAutoIndent;
+
+		/// <summary>
+		/// The CheckBox for enabling the disableTabHandling transform option.
+		/// </summary>
+		private CheckBox DisableTabHandling;
+
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="PrevalueEditor"/> class.
@@ -67,8 +106,7 @@ namespace Xilium.MarkdownDeepEditor4Umbraco
 		/// <param name="dataType">Type of the data.</param>
 		/// <param name="dbType">Type of the db.</param>
 		public PrevalueEditor(BaseDataType dataType, DBTypes dbType)
-			: base()
-		{
+			: base() {
 			this.m_DataType = dataType;
 			this.m_DataType.DBType = dbType;
 		}
@@ -77,12 +115,8 @@ namespace Xilium.MarkdownDeepEditor4Umbraco
 		/// Gets the editor.
 		/// </summary>
 		/// <value>The editor.</value>
-		public Control Editor
-		{
-			get
-			{
-				return this;
-			}
+		public Control Editor {
+			get { return this; }
 		}
 
 		/// <summary>
@@ -92,24 +126,18 @@ namespace Xilium.MarkdownDeepEditor4Umbraco
 		/// <returns>
 		/// Returns the options for the PreValue Editor
 		/// </returns>
-		public T GetPreValueOptions<T>()
-		{
+		public T GetPreValueOptions<T>() {
 			var prevalues = PreValues.GetPreValues(this.m_DataType.DataTypeDefinitionId);
-			if (prevalues.Count > 0)
-			{
+			if (prevalues.Count > 0) {
 				var prevalue = (PreValue)prevalues[0];
-				if (!String.IsNullOrEmpty(prevalue.Value))
-				{
-					try
-					{
+				if (!String.IsNullOrEmpty(prevalue.Value)) {
+					try {
 						// deserialize the options
 						var serializer = new JavaScriptSerializer();
 
 						// return the options
 						return serializer.Deserialize<T>(prevalue.Value);
-					}
-					catch (Exception ex)
-					{
+					} catch (Exception ex) {
 						Log.Add(LogTypes.Error, this.m_DataType.DataTypeDefinitionId, string.Concat("MarkdownDeep Editor: Execption thrown: ", ex.Message));
 					}
 				}
@@ -119,71 +147,80 @@ namespace Xilium.MarkdownDeepEditor4Umbraco
 			return default(T);
 		}
 
+		private void setControls() {
+			// set the values
+			this.TextBoxWidth.Text = this.Options.Width.ToString();
+			this.TextBoxHeight.Text = this.Options.Height.ToString();
+			this.OutputFormats.SelectedValue = this.Options.OutputFormat.ToString();
+
+			this.SafeMode.Checked = this.Options.SafeMode;
+			this.ExtraMode.Checked = this.Options.ExtraMode;
+			this.MarkdownInHtml.Checked = this.Options.MarkdownInHtml;
+			this.AutoHeadingIDs.Checked = this.Options.AutoHeadingIDs;
+			this.NewWindowForExternalLinks.Checked = this.Options.NewWindowForExternalLinks;
+			this.NewWindowForLocalLinks.Checked = this.Options.NewWindowForLocalLinks;
+			this.NoFollowLinks.Checked = this.Options.NoFollowLinks;
+
+			this.EnableUIEditor.Checked = this.Options.EnableUIEditor;
+			this.DisableAutoIndent.Checked = this.Options.DisableAutoIndent;
+			this.DisableTabHandling.Checked = this.Options.DisableTabHandling;
+			this.ShowPreview.SelectedValue = this.Options.ShowPreview.ToString();
+		}
+
 		/// <summary>
 		/// Saves this instance.
 		/// </summary>
-		public void Save()
-		{
-			// set the options
-			var options = new Options(true)
-			{
-				EnableHistory = this.EnableHistory.Checked,
-				EnableWmd = this.EnableWmd.Checked,
-				HelpUrl = this.TextBoxHelpUrl.Text,
-				OutputFormat = (Options.OutputFormats)this.OutputFormats.SelectedIndex,
-				SelectedPreview = this.PreviewOptions.SelectedValue
-			};
-
-			// parse the height
-			int height, width;
-			if (int.TryParse(this.TextBoxHeight.Text, out height))
-			{
-				if (height == 0)
-				{
-					height = 300;
-				}
-
-				options.Height = height;
-			}
+		public void Save() {
+			int valInt;
 
 			// parse the width
-			if (int.TryParse(this.TextBoxWidth.Text, out width))
-			{
-				if (width == 0)
-				{
-					width = 525;
-				}
+			if (int.TryParse(this.TextBoxWidth.Text, out valInt) && valInt > 200) this.Options.Width = valInt;
 
-				options.Width = width;
-			}
+			// parse the height
+			if (int.TryParse(this.TextBoxHeight.Text, out valInt) && valInt > 20) this.Options.Height = valInt;
+			
+			// set the options
+			this.Options.OutputFormat = this.OutputFormats.SelectedValue.ParseToEnum<Options.OutputFormats>(this.Options.OutputFormat);
+
+			this.Options.SafeMode = this.SafeMode.Checked;
+			this.Options.ExtraMode = this.ExtraMode.Checked;
+			this.Options.MarkdownInHtml = this.MarkdownInHtml.Checked;
+			this.Options.AutoHeadingIDs = this.AutoHeadingIDs.Checked;
+			this.Options.NewWindowForExternalLinks = this.NewWindowForExternalLinks.Checked;
+			this.Options.NewWindowForLocalLinks = this.NewWindowForLocalLinks.Checked;
+			this.Options.NoFollowLinks = this.NoFollowLinks.Checked;
+
+			this.Options.EnableUIEditor = this.EnableUIEditor.Checked;
+
+			this.Options.DisableAutoIndent = this.DisableAutoIndent.Checked;
+			this.Options.DisableTabHandling = this.DisableTabHandling.Checked;
+
+			this.Options.ShowPreview = this.ShowPreview.SelectedValue.ParseToEnum<Options.ShowPreviewOptions>(this.Options.ShowPreview);
 
 			// save the options as JSON
-			this.SaveAsJson(options);
+			this.SaveAsJson();
+
+			// set controls to loaded values
+			setControls();
 		}
 
 		/// <summary>
 		/// Saves the data-type PreValue options.
 		/// </summary>
-		/// <param name="options">The PreValue options.</param>
-		public void SaveAsJson(object options)
-		{
+		public void SaveAsJson() {
 			// serialize the options into JSON
 			var serializer = new JavaScriptSerializer();
-			var json = serializer.Serialize(options);
+			var json = serializer.Serialize(this.Options);
 
-			lock (m_Locker)
-			{
+			lock (m_Locker) {
 				var prevalues = PreValues.GetPreValues(this.m_DataType.DataTypeDefinitionId);
-				if (prevalues.Count > 0)
-				{
+				if (prevalues.Count > 0) {
 					PreValue prevalue = (PreValue)prevalues[0];
 
 					// update
 					prevalue.Value = json;
 					prevalue.Save();
-				}
-				else
-				{
+				} else {
 					// insert
 					PreValue.MakeNew(this.m_DataType.DataTypeDefinitionId, json);
 				}
@@ -194,8 +231,7 @@ namespace Xilium.MarkdownDeepEditor4Umbraco
 		/// Renders the HTML opening tag of the control to the specified writer. This method is used primarily by control developers.
 		/// </summary>
 		/// <param name="writer">A <see cref="T:System.Web.UI.HtmlTextWriter"/> that represents the output stream to render HTML content on the client.</param>
-		public override void RenderBeginTag(HtmlTextWriter writer)
-		{
+		public override void RenderBeginTag(HtmlTextWriter writer) {
 			writer.AddAttribute(HtmlTextWriterAttribute.Class, "settings");
 			writer.RenderBeginTag(HtmlTextWriterTag.Div); //// start 'settings'
 
@@ -206,8 +242,7 @@ namespace Xilium.MarkdownDeepEditor4Umbraco
 		/// Renders the HTML closing tag of the control into the specified writer. This method is used primarily by control developers.
 		/// </summary>
 		/// <param name="writer">A <see cref="T:System.Web.UI.HtmlTextWriter"/> that represents the output stream to render HTML content on the client.</param>
-		public override void RenderEndTag(HtmlTextWriter writer)
-		{
+		public override void RenderEndTag(HtmlTextWriter writer) {
 			base.RenderEndTag(writer);
 
 			writer.RenderEndTag(); //// end 'settings'
@@ -217,8 +252,7 @@ namespace Xilium.MarkdownDeepEditor4Umbraco
 		/// Raises the <see cref="E:System.Web.UI.Control.Init"/> event.
 		/// </summary>
 		/// <param name="e">An <see cref="T:System.EventArgs"/> object that contains the event data.</param>
-		protected override void OnInit(EventArgs e)
-		{
+		protected override void OnInit(EventArgs e) {
 			base.OnInit(e);
 
 			this.EnsureChildControls();
@@ -230,91 +264,111 @@ namespace Xilium.MarkdownDeepEditor4Umbraco
 		/// <summary>
 		/// Creates child controls for this control
 		/// </summary>
-		protected override void CreateChildControls()
-		{
+		protected override void CreateChildControls() {
 			base.CreateChildControls();
 
 			// set-up child controls
-			this.EnableHistory = new CheckBox() { ID = "EnableHistory" };
-			this.EnableWmd = new CheckBox() { ID = "EnableWmd" };
-			this.PreviewOptions = new RadioButtonList() { ID = "PreviewOptions", RepeatDirection = RepeatDirection.Vertical, RepeatLayout = RepeatLayout.Flow };
-			this.OutputFormats = new RadioButtonList() { ID = "OutputFormats", RepeatDirection = RepeatDirection.Vertical, RepeatLayout = RepeatLayout.Flow };
-			this.TextBoxHeight = new TextBox() { ID = "Height", CssClass = "guiInputText" };
-			this.TextBoxHelpUrl = new TextBox() { ID = "TextBoxHelpUrl", CssClass = "guiInputText umbEditorTextField" };
 			this.TextBoxWidth = new TextBox() { ID = "Width", CssClass = "guiInputText" };
+			this.TextBoxHeight = new TextBox() { ID = "Height", CssClass = "guiInputText" };
+			this.OutputFormats = new RadioButtonList() { ID = "OutputFormats", RepeatDirection = RepeatDirection.Vertical, RepeatLayout = RepeatLayout.Flow };
+
+			this.SafeMode = new CheckBox() { ID = "SafeMode", Text = "SafeMode (only safe markup)" };
+			this.ExtraMode = new CheckBox() { ID = "ExtraMode", Text = "ExtraMode (MarkdownExtra extensions)" };
+			this.MarkdownInHtml = new CheckBox() { ID = "MarkdownInHtml", Text = "Markdown in Html (markdown in nested html)" };
+			this.AutoHeadingIDs = new CheckBox() { ID = "AutoHeadingIDs", Text = "Auto Heading IDs (automatically generate IDs for headings)" };
+			this.NewWindowForExternalLinks = new CheckBox() { ID = "NewWindowForExternalLinks", Text = "New window for external links" };
+			this.NewWindowForLocalLinks = new CheckBox() { ID = "NewWindowForLocalLinks", Text = "New window for local links" };
+			this.NoFollowLinks = new CheckBox() { ID = "NoFollowLinks", Text = "No-follow links (add rel=nofollow to all external links)" };
+			this.DisableAutoIndent = new CheckBox() { ID = "DisableAutoIndent", Text = "Disable auto-indent (disables auto tab-indent on pressing enter)" };
+			this.DisableTabHandling = new CheckBox() { ID = "DisableTabHandling", Text = "Disable tab-handling (disables tab key working in the editor)" };
+
+			this.EnableUIEditor = new CheckBox() { ID = "EnableUIEditor", Text = "yes, enable UI Editor with toolbar" };
+			this.ShowPreview = new RadioButtonList() { ID = "ShowPreview", RepeatDirection = RepeatDirection.Vertical, RepeatLayout = RepeatLayout.Flow };
 
 			// populate the controls
+
 			var items = new ListItem[]
 			{
-				new ListItem("Disabled - No preview will appear", string.Empty),
-				new ListItem("Toolbar - Adds Compose/Preview toggle buttons to the toolbar (default)", "toolbar"),
-				new ListItem("Above - Auto-updated preview to appear above the editor", "above"),
-				new ListItem("Below - Auto-updated preview to appear below the editor", "below")
-			};
-			this.PreviewOptions.Items.AddRange(items);
-
-			items = new ListItem[]
-			{
-				new ListItem("HTML - Renders the Markdown text as HTML, stored as CDATA text.", "0"),
-				new ListItem("XML - Renders the Markdown text as HTML, stored as raw XML.", "1"),
-				new ListItem("Markdown - Outputs the raw Markdown, stored as CDATA text.", "2")
+				new ListItem("HTML - Renders the Markdown text as HTML, stored as CDATA text.", Options.OutputFormats.HTML.ToString()),
+				new ListItem("XML - Renders the Markdown text as HTML, stored as raw XML.", Options.OutputFormats.XML.ToString()),
+				new ListItem("Markdown - Outputs the raw Markdown, stored as CDATA text.", Options.OutputFormats.Markdown.ToString())
 			};
 			this.OutputFormats.Items.AddRange(items);
 
+			items = new ListItem[]
+			{
+				new ListItem("None - No preview will appear", Options.ShowPreviewOptions.None.ToString()),
+				new ListItem("Toolbar - Adds Compose/Preview toggle buttons to the toolbar (default)", Options.ShowPreviewOptions.Toolbar.ToString()),
+				new ListItem("Below - Auto-updated preview to appear below the editor", Options.ShowPreviewOptions.Below.ToString())
+			};
+			this.ShowPreview.Items.AddRange(items);
+
 			// add the child controls
-			this.Controls.Add(this.EnableHistory);
-			this.Controls.Add(this.EnableWmd);
-			this.Controls.Add(this.PreviewOptions);
-			this.Controls.Add(this.OutputFormats);
-			this.Controls.Add(this.TextBoxHeight);
-			this.Controls.Add(this.TextBoxHelpUrl);
 			this.Controls.Add(this.TextBoxWidth);
+			this.Controls.Add(this.TextBoxHeight);
+			this.Controls.Add(this.OutputFormats);
+
+			this.Controls.Add(this.SafeMode);
+			this.Controls.Add(this.ExtraMode);
+			this.Controls.Add(this.MarkdownInHtml);
+			this.Controls.Add(this.AutoHeadingIDs);
+			this.Controls.Add(this.NewWindowForExternalLinks);
+			this.Controls.Add(this.NewWindowForLocalLinks);
+			this.Controls.Add(this.NoFollowLinks);
+			this.Controls.Add(this.DisableAutoIndent);
+			this.Controls.Add(this.DisableTabHandling);
+
+			this.Controls.Add(this.EnableUIEditor);
+			this.Controls.Add(this.ShowPreview);
 		}
 
 		/// <summary>
 		/// Raises the <see cref="E:System.Web.UI.Control.Load"/> event.
 		/// </summary>
 		/// <param name="e">The <see cref="T:System.EventArgs"/> object that contains the event data.</param>
-		protected override void OnLoad(EventArgs e)
-		{
+		protected override void OnLoad(EventArgs e) {
 			base.OnLoad(e);
 
 			// get PreValues, load them into the controls.
 			var options = this.GetPreValueOptions<Options>();
 
 			// no options? use the default ones.
-			if (options == null)
-			{
-				options = new Options(true);
-			}
+			if (options == null) options = new Options(true);
 
-			// set the values
-			this.EnableHistory.Checked = options.EnableHistory;
-			this.EnableWmd.Checked = options.EnableWmd;
-			this.PreviewOptions.SelectedValue = options.SelectedPreview;
-			this.OutputFormats.SelectedIndex = options.SaveAsXml ? 1 : (int)options.OutputFormat;
-			this.TextBoxHeight.Text = options.Height.ToString();
-			this.TextBoxHelpUrl.Text = options.HelpUrl;
-			this.TextBoxWidth.Text = options.Width.ToString();
+			this.Options = options;
+
+			// set controls to loaded values
+			setControls();
 		}
+
 
 		/// <summary>
 		/// Renders the contents of the control to the specified writer. This method is used primarily by control developers.
 		/// </summary>
 		/// <param name="writer">A <see cref="T:System.Web.UI.HtmlTextWriter"/> that represents the output stream to render HTML content on the client.</param>
-		protected override void RenderContents(HtmlTextWriter writer)
-		{
+		protected override void RenderContents(HtmlTextWriter writer) {
 			// add property fields
-			writer.AddPrevalueRow("Height:", this.TextBoxHeight);
-			writer.AddPrevalueRow("Width:", this.TextBoxWidth);
+			writer.AddPrevalueRow("Editor width:", this.TextBoxWidth);
+			writer.AddPrevalueRow("Editor height:", this.TextBoxHeight);
 			writer.AddPrevalueRow("Output Format:", this.OutputFormats);
-			writer.AddPrevalueRow("Enable WMD editor:", "The WMD editor is powered by <a href='http://tstone.github.com/jquery-markedit/' target='_blank'>MarkEdit</a> by Titus Stone.", this.EnableWmd);
 
-			// configuration options - http://wiki.github.com/tstone/jquery-markedit/configuration-options
-			writer.AddPrevalueRow(string.Empty, "The following options are only applicable when the WMD editor is enabled.");
-			writer.AddPrevalueRow("Preview:", this.PreviewOptions);
-			writer.AddPrevalueRow("Enable history:", "This enables/disables the undo/redo editing history for the WMD editor.", this.EnableHistory);
-			writer.AddPrevalueRow("Help URL:", "Override the help URL for the WMD editor.", this.TextBoxHelpUrl);
+			writer.AddPrevalueRow("Transform options:"
+				, this.SafeMode
+				, this.ExtraMode
+				, this.MarkdownInHtml
+				, this.AutoHeadingIDs
+				, this.NewWindowForExternalLinks
+				, this.NewWindowForLocalLinks
+				, this.NoFollowLinks);
+
+			writer.AddPrevalueRow("Enable UI editor:", this.EnableUIEditor);
+
+			writer.AddPrevalueRow(string.Empty, "<hr/>The following options are only applicable when the UI editor is enabled.");
+			writer.AddPrevalueRow("Show preview:", this.ShowPreview);
+
+			writer.AddPrevalueRow("UI editor options:"
+				, this.DisableAutoIndent
+				, this.DisableTabHandling);
 		}
 	}
 }
