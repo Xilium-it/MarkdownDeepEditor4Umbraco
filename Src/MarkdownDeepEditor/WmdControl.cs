@@ -5,23 +5,20 @@ using System.Web.UI.WebControls;
 using ClientDependency.Core;
 using Xilium.MarkdownDeepEditor4Umbraco.Extensions;
 
-[assembly: WebResource("Our.Umbraco.DataType.Markdown.Resources.MarkEdit.showdown.js", "application/x-javascript")]
-[assembly: WebResource("Our.Umbraco.DataType.Markdown.Resources.MarkEdit.jquery.markedit.js", "application/x-javascript")]
-[assembly: WebResource("Our.Umbraco.DataType.Markdown.Resources.MarkEdit.jquery.markedit.css", "text/css", PerformSubstitution = true)]
-[assembly: WebResource("Our.Umbraco.DataType.Markdown.Resources.MarkEdit.images.wmd-buttons.png", "image/png")]
+[assembly: WebResource("Xilium.MarkdownDeepEditor4Umbraco.Resources.MarkEdit.showdown.js", "application/x-javascript")]
+[assembly: WebResource("Xilium.MarkdownDeepEditor4Umbraco.Resources.MarkEdit.jquery.markedit.js", "application/x-javascript")]
+[assembly: WebResource("Xilium.MarkdownDeepEditor4Umbraco.Resources.MarkEdit.jquery.markedit.css", "text/css", PerformSubstitution = true)]
+[assembly: WebResource("Xilium.MarkdownDeepEditor4Umbraco.Resources.MarkEdit.images.wmd-buttons.png", "image/png")]
 
-namespace Xilium.MarkdownDeepEditor4Umbraco
-{
+namespace Xilium.MarkdownDeepEditor4Umbraco {
 	/// <summary>
 	/// The WMD control for the Markdown Editor.
 	/// </summary>
-	public class WmdControl : WebControl
-	{
+	public class WmdControl : WebControl {
 		/// <summary>
 		/// Initializes a new instance of the <see cref="WmdControl"/> class.
 		/// </summary>
-		public WmdControl()
-		{
+		public WmdControl() {
 		}
 
 		/// <summary>
@@ -34,17 +31,13 @@ namespace Xilium.MarkdownDeepEditor4Umbraco
 		/// Gets or sets the text.
 		/// </summary>
 		/// <value>The text for the TextBoxControl.</value>
-		public string Text
-		{
-			get
-			{
+		public string Text {
+			get {
 				return this.TextBoxControl.Text;
 			}
 
-			set
-			{
-				if (this.TextBoxControl == null)
-				{
+			set {
+				if (this.TextBoxControl == null) {
 					this.TextBoxControl = new TextBox();
 				}
 
@@ -62,8 +55,7 @@ namespace Xilium.MarkdownDeepEditor4Umbraco
 		/// Initialize the control, make sure children are created
 		/// </summary>
 		/// <param name="e">An <see cref="T:System.EventArgs"/> object that contains the event data.</param>
-		protected override void OnInit(EventArgs e)
-		{
+		protected override void OnInit(EventArgs e) {
 			base.OnInit(e);
 
 			this.EnsureChildControls();
@@ -73,25 +65,22 @@ namespace Xilium.MarkdownDeepEditor4Umbraco
 		/// Add the resources (sytles/scripts)
 		/// </summary>
 		/// <param name="e">The <see cref="T:System.EventArgs"/> object that contains the event data.</param>
-		protected override void OnLoad(EventArgs e)
-		{
+		protected override void OnLoad(EventArgs e) {
 			base.OnLoad(e);
 
 			// check if WMD Editor has been enabled.
-			if (this.Options.EnableWmd)
-			{
+			if (this.Options.EnableWmd) {
 				// adds the client dependencies.
-				this.AddResourceToClientDependency("Our.Umbraco.DataType.Markdown.Resources.MarkEdit.jquery.markedit.css", ClientDependencyType.Css);
-				this.AddResourceToClientDependency("Our.Umbraco.DataType.Markdown.Resources.MarkEdit.jquery.markedit.js", ClientDependencyType.Javascript);
-				this.AddResourceToClientDependency("Our.Umbraco.DataType.Markdown.Resources.MarkEdit.showdown.js", ClientDependencyType.Javascript);
+				this.AddResourceToClientDependency("Xilium.MarkdownDeepEditor4Umbraco.Resources.MarkEdit.jquery.markedit.css", ClientDependencyType.Css);
+				this.AddResourceToClientDependency("Xilium.MarkdownDeepEditor4Umbraco.Resources.MarkEdit.jquery.markedit.js", ClientDependencyType.Javascript);
+				this.AddResourceToClientDependency("Xilium.MarkdownDeepEditor4Umbraco.Resources.MarkEdit.showdown.js", ClientDependencyType.Javascript);
 			}
 		}
 
 		/// <summary>
 		/// Called by the ASP.NET page framework to notify server controls that use composition-based implementation to create any child controls they contain in preparation for posting back or rendering.
 		/// </summary>
-		protected override void CreateChildControls()
-		{
+		protected override void CreateChildControls() {
 			base.CreateChildControls();
 
 			this.EnsureChildControls();
@@ -111,8 +100,7 @@ namespace Xilium.MarkdownDeepEditor4Umbraco
 		/// Renders the contents of the control to the specified writer. This method is used primarily by control developers.
 		/// </summary>
 		/// <param name="writer">A <see cref="T:System.Web.UI.HtmlTextWriter"/> that represents the output stream to render HTML content on the client.</param>
-		protected override void RenderContents(HtmlTextWriter writer)
-		{
+		protected override void RenderContents(HtmlTextWriter writer) {
 			writer.AddAttribute(HtmlTextWriterAttribute.Class, "MarkdownTextBox");
 			writer.AddAttribute(HtmlTextWriterAttribute.Style, string.Concat("width: ", this.Options.Width + 6, "px;"));
 			writer.RenderBeginTag(HtmlTextWriterTag.Div);
@@ -122,8 +110,7 @@ namespace Xilium.MarkdownDeepEditor4Umbraco
 			writer.RenderEndTag(); // .MarkdownTextBox
 
 			// check if WMD Editor has been enabled.
-			if (this.Options.EnableWmd)
-			{
+			if (this.Options.EnableWmd) {
 				const char QUOTE = '\'';
 				////const char COMMA = ',';
 
@@ -131,22 +118,18 @@ namespace Xilium.MarkdownDeepEditor4Umbraco
 				var markeditOptions = new StringBuilder("{");
 
 				// history option
-				if (!this.Options.EnableHistory)
-				{
+				if (!this.Options.EnableHistory) {
 					markeditOptions.Append("'history': false, ");
 				}
 
 				// preview option
 				markeditOptions.Append("'preview': ");
-				if (!string.IsNullOrEmpty(this.Options.SelectedPreview))
-				{
+				if (!string.IsNullOrEmpty(this.Options.SelectedPreview)) {
 					markeditOptions
 						.Append(QUOTE)
 						.Append(this.Options.SelectedPreview)
 						.Append(QUOTE);
-				}
-				else
-				{
+				} else {
 					markeditOptions.Append("false");
 				}
 
@@ -155,9 +138,8 @@ namespace Xilium.MarkdownDeepEditor4Umbraco
 					.Append("'layout': 'bold italic | link quote code image | numberlist bulletlist heading line");
 
 				// reference the help button
-				if (!string.IsNullOrEmpty(this.Options.HelpUrl))
-				{
-					markeditOptions.Append(" | help");	
+				if (!string.IsNullOrEmpty(this.Options.HelpUrl)) {
+					markeditOptions.Append(" | help");
 				}
 
 				markeditOptions
@@ -165,14 +147,13 @@ namespace Xilium.MarkdownDeepEditor4Umbraco
 					.Append("'buttons' : [ ");
 
 				// add the help button
-				if (!string.IsNullOrEmpty(this.Options.HelpUrl))
-				{
+				if (!string.IsNullOrEmpty(this.Options.HelpUrl)) {
 					markeditOptions
 						.Append("{ 'id' : 'help', 'css' : 'help', 'tip' : 'Markdown Syntax Help', 'click' : function(){ window.open('")
 						.Append(this.Options.HelpUrl)
 						.Append("'); }, 'mouseover' : function(){}, 'mouseout' : function(){} }");
 				}
-				
+
 				markeditOptions
 					.Append(" ] }")
 					.Append("}");
