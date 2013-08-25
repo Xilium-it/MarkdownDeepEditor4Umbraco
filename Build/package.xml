@@ -3,19 +3,19 @@
 	<files />
 	<info>
 		<package>
-			<name>Markdown Editor</name>
-			<version>1.4</version>
+			<name>MarkdownDeep Editor</name>
+			<version>2.0</version>
 			<license url="http://www.opensource.org/licenses/mit-license.php">MIT license</license>
-			<url>http://our.umbraco.org/projects/backoffice-extensions/markdown-editor</url>
+			<url>http://our.umbraco.org/projects/backoffice-extensions/markdowndeep-editor</url>
 			<requirements>
 				<major>4</major>
-				<minor>5</minor>
+				<minor>8</minor>
 				<patch>0</patch>
 			</requirements>
 		</package>
 		<author>
-			<name>Lee Kelleher</name>
-			<website>http://leekelleher.com</website>
+			<name>Xilium Software</name>
+			<website>http://xilium.it</website>
 		</author>
 		<readme><![CDATA[]]></readme>
 	</info>
@@ -26,7 +26,7 @@
 	<DictionaryItems />
 	<Languages />
 	<DataTypes>
-		<DataType Name="Markdown Editor" Id="7e909384-2543-4aeb-acea-5e256f68c480" Definition="2058cfc3-0ac3-4a89-a04a-e46cf678d8b8">
+		<DataType Name="MarkdownDeep Editor" Id="86C1F03D-0AD8-464B-9CFD-B360839CA184" Definition="2E5D50F7-782A-4C67-ACFA-D132BE4EE22C">
 			<PreValues>
 				<PreValue Id="8" Value="{&quot;EnableHistory&quot;:true,&quot;EnableWmd&quot;:true,&quot;Height&quot;:400,&quot;HelpUrl&quot;:&quot;http://daringfireball.net/projects/markdown/syntax&quot;,&quot;OutputFormat&quot;:&quot;0&quot;,&quot;SelectedPreview&quot;:&quot;toolbar&quot;,&quot;Width&quot;:525}" />
 			</PreValues>

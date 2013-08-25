@@ -1,8 +1,8 @@
-﻿The Markdown Editor for Umbraco is a data-type that allows you to write your content using Markdown syntax.
+﻿The "MarkdownDeep Editor for Umbraco" is a data-type that allows you to write your content using MarkdownDeep syntax.
 Configuration options are available to enable/disable the WMD Editor (powered by MarkEdit).
 
-For a reference guide to the Markdown syntax, please visit: http://daringfireball.net/projects/markdown/syntax
+This package is a fork of "Markdown Editor for Umbraco" developed by "leekelleher" (visit http://markdown4umb.codeplex.com/).
 
-The Markdown syntax is rendered by the MarkdownSharp processor library: http://code.google.com/p/markdownsharp/
+"MarkdownDeep Editor for Umbraco" uses MarkdownDeep instead of MarkdownSharp, that adds table feature with alignment, colspan and head-style sttributes to any table cell.
 
-Also available to download on the project page is a helper class that provides XSLT extensions to convert Markdown to HTML and vice-versa.
+For a reference to MarkdownDeep visit: https://github.com/Xilium-it/markdowndeep
