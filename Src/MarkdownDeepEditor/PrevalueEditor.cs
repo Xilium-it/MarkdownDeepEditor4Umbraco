@@ -7,7 +7,7 @@ using umbraco.BusinessLogic;
 using umbraco.cms.businesslogic.datatype;
 using umbraco.interfaces;
 
-[assembly: WebResource("Xilium.MarkdownDeepEditor4Umbraco.Resources.Styles.PrevalueEditor.css", "text/css", PerformSubstitution = true)]
+[assembly: WebResource("Xilium.MarkdownDeepEditor4Umbraco.Resources.PrevalueEditor.style.css", "text/css", PerformSubstitution = true)]
 
 namespace Xilium.MarkdownDeepEditor4Umbraco
 {
@@ -224,7 +224,7 @@ namespace Xilium.MarkdownDeepEditor4Umbraco
 			this.EnsureChildControls();
 
 			// Adds the client dependencies.
-			this.AddResourceToClientDependency("Xilium.MarkdownDeepEditor4Umbraco.Resources.Styles.PrevalueEditor.css", ClientDependency.Core.ClientDependencyType.Css);
+			this.AddResourceToClientDependency("Xilium.MarkdownDeepEditor4Umbraco.Resources.PrevalueEditor.style.css", ClientDependency.Core.ClientDependencyType.Css);
 		}
 
 		/// <summary>

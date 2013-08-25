@@ -1,0 +1,18 @@
+div.mdd_modal {
+	background-image: url(<%= WebResource("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor.mdd_modal_background.png")%>);
+}
+div.mdd_ajax_loader	{
+	background-image: url(<%= WebResource("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor.mdd_ajax_loader.gif")%>);
+}
+div.mdd_toolbar_wrap { background-color:#f8f8f8; width:auto; border:1px solid #d0d0d0; }
+div.mdd_toolbar a.mdd_button {
+	background-image: url(<%= WebResource("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor.mdd_toolbar.png")%>);
+}
+div.mdd_resizer	{
+	background-image: url(<%= WebResource("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor.mdd_gripper.png")%>);
+}
+
+#mdd_syntax_container.mdd_modal	{ box-sizing:border-box; padding:50px; }
+#mdd_syntax_container.mdd_modal .mdd_modal_frame	{ width:100%; height:100%; margin:0; }
+
+.mdd_preview	{ border:1px solid #d0d0d0; margin-top:-1px; background:#f4faff; }

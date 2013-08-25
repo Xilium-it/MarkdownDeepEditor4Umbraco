@@ -61,7 +61,7 @@
 }
 .markedit .light-bg button.icon
 {
-	background-image: url(<%= WebResource("Xilium.MarkdownDeepEditor4Umbraco.Resources.MarkEdit.images.wmd-buttons.png")%>);
+	background-image: url(<%= WebResource("Our.Umbraco.DataType.Markdown.Resources.MarkEdit.images.wmd-buttons.png")%>);
 }
 
 .markedit-toolbar button.bold

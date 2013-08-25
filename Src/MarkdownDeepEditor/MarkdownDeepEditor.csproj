@@ -83,13 +83,17 @@
     <EmbeddedResource Include="Resources_OLD\Styles\PrevalueEditor.css" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\MarkdownDeepLib.js" />
-    <Content Include="Resources\mdd_ajax_loader.gif" />
-    <Content Include="Resources\mdd_gripper.png" />
-    <Content Include="Resources\mdd_help.html" />
-    <Content Include="Resources\mdd_modal_background.png" />
-    <Content Include="Resources\mdd_styles.css" />
-    <Content Include="Resources\mdd_toolbar.png" />
+    <EmbeddedResource Include="Resources\MDDEditor\MarkdownDeep.js" />
+    <EmbeddedResource Include="Resources\MDDEditor\MarkdownDeepEditor.js" />
+    <EmbeddedResource Include="Resources\MDDEditor\MarkdownDeepEditorUI.js" />
+    <EmbeddedResource Include="Resources\MDDEditor\mdd_ajax_loader.gif" />
+    <EmbeddedResource Include="Resources\MDDEditor\mdd_gripper.png" />
+    <EmbeddedResource Include="Resources\MDDEditor\mdd_help.html" />
+    <EmbeddedResource Include="Resources\MDDEditor\mdd_modal_background.png" />
+    <EmbeddedResource Include="Resources\MDDEditor\mdd_styles.css" />
+    <EmbeddedResource Include="Resources\MDDEditor\mdd_toolbar.png" />
+    <EmbeddedResource Include="Resources\MDDEditor_custom\mdd_styles.css" />
+    <EmbeddedResource Include="Resources\PrevalueEditor\style.css" />
     <Content Include="Resources_OLD\MarkEdit\examples\basic.html" />
     <Content Include="Resources_OLD\MarkEdit\examples\dark-theme.html" />
     <Content Include="Resources_OLD\MarkEdit\examples\flickr-image-gallery.html" />

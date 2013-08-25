@@ -5,10 +5,22 @@ using System.Web.UI.WebControls;
 using ClientDependency.Core;
 using Xilium.MarkdownDeepEditor4Umbraco.Extensions;
 
+/*
 [assembly: WebResource("Xilium.MarkdownDeepEditor4Umbraco.Resources.MarkEdit.showdown.js", "application/x-javascript")]
 [assembly: WebResource("Xilium.MarkdownDeepEditor4Umbraco.Resources.MarkEdit.jquery.markedit.js", "application/x-javascript")]
 [assembly: WebResource("Xilium.MarkdownDeepEditor4Umbraco.Resources.MarkEdit.jquery.markedit.css", "text/css", PerformSubstitution = true)]
 [assembly: WebResource("Xilium.MarkdownDeepEditor4Umbraco.Resources.MarkEdit.images.wmd-buttons.png", "image/png")]
+*/
+[assembly: WebResource("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor.MarkdownDeep.js", "application/x-javascript")]
+[assembly: WebResource("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor.MarkdownDeepEditor.js", "application/x-javascript")]
+[assembly: WebResource("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor.MarkdownDeepEditorUI.js", "application/x-javascript")]
+[assembly: WebResource("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor.mdd_styles.css", "text/css")]
+[assembly: WebResource("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor.mdd_ajax_loader.gif", "image/gif")]
+[assembly: WebResource("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor.mdd_gripper.png", "image/png")]
+[assembly: WebResource("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor.mdd_modal_background.png", "image/png")]
+[assembly: WebResource("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor.mdd_toolbar.png", "image/png")]
+[assembly: WebResource("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor.mdd_help.html", "text/html")]
+[assembly: WebResource("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor_custom.mdd_styles.css", "text/css", PerformSubstitution = true)]
 
 namespace Xilium.MarkdownDeepEditor4Umbraco {
 	/// <summary>
@@ -71,9 +83,11 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 			// check if WMD Editor has been enabled.
 			if (this.Options.EnableWmd) {
 				// adds the client dependencies.
-				this.AddResourceToClientDependency("Xilium.MarkdownDeepEditor4Umbraco.Resources.MarkEdit.jquery.markedit.css", ClientDependencyType.Css);
-				this.AddResourceToClientDependency("Xilium.MarkdownDeepEditor4Umbraco.Resources.MarkEdit.jquery.markedit.js", ClientDependencyType.Javascript);
-				this.AddResourceToClientDependency("Xilium.MarkdownDeepEditor4Umbraco.Resources.MarkEdit.showdown.js", ClientDependencyType.Javascript);
+				this.AddResourceToClientDependency("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor.mdd_styles.css", ClientDependencyType.Css);
+				this.AddResourceToClientDependency("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor_custom.mdd_styles.css", ClientDependencyType.Css);
+				this.AddResourceToClientDependency("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor.MarkdownDeep.js", ClientDependencyType.Javascript);
+				this.AddResourceToClientDependency("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor.MarkdownDeepEditor.js", ClientDependencyType.Javascript);
+				this.AddResourceToClientDependency("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor.MarkdownDeepEditorUI.js", ClientDependencyType.Javascript);
 			}
 		}
 
@@ -101,67 +115,89 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 		/// </summary>
 		/// <param name="writer">A <see cref="T:System.Web.UI.HtmlTextWriter"/> that represents the output stream to render HTML content on the client.</param>
 		protected override void RenderContents(HtmlTextWriter writer) {
-			writer.AddAttribute(HtmlTextWriterAttribute.Class, "MarkdownTextBox");
+			writer.AddAttribute(HtmlTextWriterAttribute.Class, "MarkdownDeepTextBox");
 			writer.AddAttribute(HtmlTextWriterAttribute.Style, string.Concat("width: ", this.Options.Width + 6, "px;"));
 			writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
 			this.TextBoxControl.RenderControl(writer);
 
-			writer.RenderEndTag(); // .MarkdownTextBox
+			writer.RenderEndTag(); // div.MarkdownDeepTextBox
 
 			// check if WMD Editor has been enabled.
 			if (this.Options.EnableWmd) {
-				const char QUOTE = '\'';
-				////const char COMMA = ',';
+				switch (2) {
+					case 1:
+						const char QUOTE = '\'';
+						////const char COMMA = ',';
 
-				// set the MarkEdit options
-				var markeditOptions = new StringBuilder("{");
+						// set the MarkEdit options
+						var markeditOptions = new StringBuilder("{");
 
-				// history option
-				if (!this.Options.EnableHistory) {
-					markeditOptions.Append("'history': false, ");
+						// history option
+						if (!this.Options.EnableHistory) {
+							markeditOptions.Append("'history': false, ");
+						}
+
+						// preview option
+						markeditOptions.Append("'preview': ");
+						if (!string.IsNullOrEmpty(this.Options.SelectedPreview)) {
+							markeditOptions
+								.Append(QUOTE)
+								.Append(this.Options.SelectedPreview)
+								.Append(QUOTE);
+						} else {
+							markeditOptions.Append("false");
+						}
+
+						markeditOptions
+							.Append(", 'toolbar': { ")
+							.Append("'layout': 'bold italic | link quote code image | numberlist bulletlist heading line");
+
+						// reference the help button
+						if (!string.IsNullOrEmpty(this.Options.HelpUrl)) {
+							markeditOptions.Append(" | help");
+						}
+
+						markeditOptions
+							.Append("', ")
+							.Append("'buttons' : [ ");
+
+						// add the help button
+						if (!string.IsNullOrEmpty(this.Options.HelpUrl)) {
+							markeditOptions
+								.Append("{ 'id' : 'help', 'css' : 'help', 'tip' : 'Markdown Syntax Help', 'click' : function(){ window.open('")
+								.Append(this.Options.HelpUrl)
+								.Append("'); }, 'mouseover' : function(){}, 'mouseout' : function(){} }");
+						}
+
+						markeditOptions
+							.Append(" ] }")
+							.Append("}");
+
+						// add jquery window load event
+						var javascriptMethod = string.Format("jQuery('#{0}').markedit( {1} );", this.TextBoxControl.ClientID, markeditOptions);
+						var javascript = string.Concat("<script type='text/javascript'>jQuery(window).load(function(){", javascriptMethod, "});</script>");
+						writer.WriteLine(javascript);
+
+						break;
+					case 2:
+
+						var strJS = new System.Text.StringBuilder();
+						strJS.Append("\n<script type=\"text/javascript\">");
+						strJS.Append("\njQuery(window).load(function(){ $(\"#" + this.TextBoxControl.ClientID + "\").MarkdownDeep({");
+
+
+						// Set MarkdownDeep editor options
+						strJS.Append("help_location: \"" + this.GetWebResourceUrl("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor.mdd_help.html") + "\"");
+
+						strJS.Append(" }); });");
+						strJS.Append("\n</script>");
+
+						writer.WriteLine(strJS);
+
+						break;
 				}
-
-				// preview option
-				markeditOptions.Append("'preview': ");
-				if (!string.IsNullOrEmpty(this.Options.SelectedPreview)) {
-					markeditOptions
-						.Append(QUOTE)
-						.Append(this.Options.SelectedPreview)
-						.Append(QUOTE);
-				} else {
-					markeditOptions.Append("false");
-				}
-
-				markeditOptions
-					.Append(", 'toolbar': { ")
-					.Append("'layout': 'bold italic | link quote code image | numberlist bulletlist heading line");
-
-				// reference the help button
-				if (!string.IsNullOrEmpty(this.Options.HelpUrl)) {
-					markeditOptions.Append(" | help");
-				}
-
-				markeditOptions
-					.Append("', ")
-					.Append("'buttons' : [ ");
-
-				// add the help button
-				if (!string.IsNullOrEmpty(this.Options.HelpUrl)) {
-					markeditOptions
-						.Append("{ 'id' : 'help', 'css' : 'help', 'tip' : 'Markdown Syntax Help', 'click' : function(){ window.open('")
-						.Append(this.Options.HelpUrl)
-						.Append("'); }, 'mouseover' : function(){}, 'mouseout' : function(){} }");
-				}
-
-				markeditOptions
-					.Append(" ] }")
-					.Append("}");
-
-				// add jquery window load event
-				var javascriptMethod = string.Format("jQuery('#{0}').markedit( {1} );", this.TextBoxControl.ClientID, markeditOptions);
-				var javascript = string.Concat("<script type='text/javascript'>jQuery(window).load(function(){", javascriptMethod, "});</script>");
-				writer.WriteLine(javascript);
+				
 			}
 		}
 	}

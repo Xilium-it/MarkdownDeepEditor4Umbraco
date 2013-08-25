@@ -130,11 +130,7 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 			this.m_Control.Options = this.Options;
 
 			// set the value of the control
-			if (this.Data.Value != null) {
-				this.m_Control.Text = this.Data.Value.ToString();
-			} else {
-				this.m_Control.Text = String.Empty;
-			}
+			this.m_Control.Text = (this.Data.Value != null ? this.Data.Value.ToString() : String.Empty);
 		}
 
 		/// <summary>
