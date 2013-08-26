@@ -35,7 +35,7 @@ Example:
 	public class MyMDDFormatter : TextFormatterBase {
 		private Xilium.MarkdownDeep.Markdown _instance = null;
 
-		public XiliumMarkdownDeepFormatter(DataEditor dataEditor, Options options)
+		public MyMDDFormatter(DataEditor dataEditor, Options options)
 			: base(dataEditor, options) {
 
 			this._instance = new Xilium.MarkdownDeep.Markdown();
