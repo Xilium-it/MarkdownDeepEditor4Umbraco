@@ -106,6 +106,24 @@ div.mdd_toolbar
 	height:20px;
 }
 
+div.mdd_toolbar a
+{
+	color:#404040;
+	text-decoration:none;
+	border:1px solid transparent;
+}
+
+div.mdd_toolbar a:hover	
+{
+	border-color:#909090;
+}
+
+div.mdd_toolbar a:active	
+{
+	color:white;
+	background-color:#a0c8ff;
+}
+
 div.mdd_toolbar ul
 {
 	margin:0;
@@ -128,6 +146,11 @@ div.mdd_toolbar a.mdd_button
 	display:block;
 }
 
+div.mdd_toolbar a.mdd_button.aOff
+{
+	filter:alpha(opacity=50); -moz-opacity:0.5; opacity:.5; cursor:default; background-color:#e0e0e0; border-color:transparent;
+}
+
 span.mdd_sep
 {
 	width:5px;
@@ -137,32 +160,19 @@ span.mdd_sep
 	margin-left:5px;
 }
 
-#mdd_bold			{ background-position:-1px -1px;}
-#mdd_bold:hover		{ background-position:-1px -23px; }
-#mdd_italic			{ background-position:-23px -1px; }
-#mdd_italic:hover	{ background-position:-23px -23px; }
-#mdd_ullist			{ background-position:-177px -1px; }
-#mdd_ullist:hover	{ background-position:-177px -23px; }
-#mdd_ollist			{ background-position:-155px -1px; }
-#mdd_ollist:hover	{ background-position:-155px -23px; }
-#mdd_indent			{ background-position:-67px -1px; }
-#mdd_indent:hover	{ background-position:-67px -23px; }
-#mdd_outdent		{ background-position:-89px -1px; }
-#mdd_outdent:hover	{ background-position:-89px -23px; }
-#mdd_link			{ background-position:-45px -1px; }
-#mdd_link:hover		{ background-position:-45px -23px; }
-#mdd_img			{ background-position:-133px -1px; }
-#mdd_img:hover		{ background-position:-133px -23px; }
-#mdd_hr				{ background-position:-221px -1px; }
-#mdd_hr:hover		{ background-position:-221px -23px; }
-#mdd_code			{ background-position:-111px -1px; }
-#mdd_code:hover		{ background-position:-111px -23px; }
-#mdd_heading		{ background-position:-199px -1px; }
-#mdd_heading:hover	{ background-position:-199px -23px; }
-#mdd_undo			{ background-position:-243px -1px; }
-#mdd_undo:hover		{ background-position:-243px -23px; }
-#mdd_redo			{ background-position:-265px -1px; }
-#mdd_redo:hover		{ background-position:-265px -23px; }
+#mdd_bold						{ background-position:-1px -1px;}
+#mdd_italic						{ background-position:-23px -1px; }
+#mdd_ullist						{ background-position:-177px -1px; }
+#mdd_ollist						{ background-position:-155px -1px; }
+#mdd_indent						{ background-position:-67px -1px; }
+#mdd_outdent					{ background-position:-89px -1px; }
+#mdd_link						{ background-position:-45px -1px; }
+#mdd_img						{ background-position:-133px -1px; }
+#mdd_hr							{ background-position:-221px -1px; }
+#mdd_code						{ background-position:-111px -1px; }
+#mdd_heading					{ background-position:-199px -1px; }
+#mdd_undo						{ background-position:-243px -1px; }
+#mdd_redo						{ background-position:-265px -1px; }
 
 div.mdd_links
 {
@@ -171,13 +181,31 @@ div.mdd_links
 
 div.mdd_links a
 {
-	text-decoration:none;
-	color:#404040;
-	font-size:smaller;
+	display:inline-block;
+	font-size:10px;
+	border:1px solid #c0c0c0;
+	border-radius:6px;
+	padding:2px 6px;
+	margin-top:2px;
 }
 div.mdd_links a:hover
 {
-	color:black;
+	text-decoration:underline;
+}
+div.mdd_links a.aOff
+{
+	background-color:#eeeeee;
+	box-shadow:inset 3px 3px 2px rgba(255,255,255,1);
+}
+div.mdd_links a.aOn
+{
+	background-color:#a0a0a0;
+	color:white;
+	box-shadow:inset 3px 3px 2px rgba(0,0,0,.20);
+}
+div.mdd_links a.aHide
+{
+	display:none;
 }
 
 div.mdd_editor_wrap
@@ -209,3 +237,4 @@ div.mdd_resizer
 	cursor:n-resize;
 }
 
+.mdd_preview	{ border:1px solid #d0d0d0; margin-top:-1px; background:#f4faff; }

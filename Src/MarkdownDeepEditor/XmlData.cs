@@ -29,8 +29,8 @@ namespace Xilium.MarkdownDeepEditor4Umbraco
 			if (this.Value != null && !string.IsNullOrEmpty(this.Value.ToString()))
 			{
 				// transform the markdown into HTML.
-				var markdown = TextFormatterDriver.DefaultTextFormatter;
-				string output = markdown.Transform(this.Value.ToString());
+				var mddDataEditor = (DataEditor)this._dataType;
+				string output = mddDataEditor.TextFormatter.Transform(this.Value.ToString());
 				
 				// load the HTML into an XML document.
 				var xd = new XmlDocument();

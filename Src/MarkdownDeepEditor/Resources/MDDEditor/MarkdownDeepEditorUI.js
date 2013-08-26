@@ -47,30 +47,31 @@ var MarkdownDeepEditorUI=new function(){
         // Start with nothing
         var str='';
                 
-        // The toolbar div
-        str+='<div class="mdd_links">\n';
-        str+='<a href="#" class="mdd_help" tabindex=-1>How to Format</a>\n';
-        str+='</div>\n';
-        str+='<ul>\n';
-        str+='<li><a href="#" class="mdd_button" id="mdd_undo" title="Undo (Ctrl+Z)" tabindex=-1></a></li>\n';
-        str+='<li><a href="#" class="mdd_button" id="mdd_redo" title="Redo (Ctrl+Y)" tabindex=-1></a></li>\n';
-        str+='<li><span class="mdd_sep"></span></li>\n';
-        str+='<li><a href="#" class="mdd_button" id="mdd_heading" title="Change Heading Style (Ctrl+H, or Ctrl+0 to Ctrl+6)" tabindex=-1></a></li>\n';
-        str+='<li><a href="#" class="mdd_button" id="mdd_code" title="Preformatted Code (Ctrl+K or Tab/Shift+Tab on multiline selection)" tabindex=-1></a></li>\n';
-        str+='<li><span class="mdd_sep"></span></li>\n';
-        str+='<li><a href="#" class="mdd_button" id="mdd_bold" title="Bold (Ctrl+B)" tabindex=-1></a></li>\n';
-        str+='<li><a href="#" class="mdd_button" id="mdd_italic" title="Italic (Ctrl+I)" tabindex=-1></a></li>\n';
-        str+='<li><span class="mdd_sep"></span></li>\n';
-        str+='<li><a href="#" class="mdd_button" id="mdd_ullist" title="Bullets (Ctrl+U)" tabindex=-1></a></li>\n';
-        str+='<li><a href="#" class="mdd_button" id="mdd_ollist" title="Numbering (Ctrl+O)" tabindex=-1></a></li>\n';
-        str+='<li><a href="#" class="mdd_button" id="mdd_outdent" title="Unquote (Ctrl+W)" tabindex=-1></a></li>\n';
-        str+='<li><a href="#" class="mdd_button" id="mdd_indent" title="Quote (Ctrl+Q)" tabindex=-1></a></li>\n';
-        str+='<li><span class="mdd_sep"></span></li>\n';
-        str+='<li><a href="#" class="mdd_button" id="mdd_link" title="Insert Hyperlink (Ctrl+L)" tabindex=-1></a></li>\n';
-        str+='<li><a href="#" class="mdd_button" id="mdd_img" title="Insert Image (Ctrl+G)" tabindex=-1></a></li>\n';
-        str+='<li><a href="#" class="mdd_button" id="mdd_hr" title="Insert Horizontal Rule (Ctrl+R)" tabindex=-1></a></li>\n';
-        str+='</ul>\n';
-        str+='<div style="clear:both"></div>\n';
+    	// The toolbar div
+        str += '<div class="mdd_links">\n';
+        str += '<a href="#" class="mdd_togglepreview aHide" tabindex=-1>Show preview</a>\n';
+        str += '<a href="#" class="mdd_help" tabindex=-1>How to Format</a>\n';
+        str += '</div>\n';
+        str += '<ul>\n';
+        str += '<li><a href="#" class="mdd_button" id="mdd_undo" title="Undo (Ctrl+Z)" tabindex=-1></a></li>\n';
+        str += '<li><a href="#" class="mdd_button" id="mdd_redo" title="Redo (Ctrl+Y)" tabindex=-1></a></li>\n';
+        str += '<li><span class="mdd_sep"></span></li>\n';
+        str += '<li><a href="#" class="mdd_button" id="mdd_heading" title="Change Heading Style (Ctrl+H, or Ctrl+0 to Ctrl+6)" tabindex=-1></a></li>\n';
+        str += '<li><a href="#" class="mdd_button" id="mdd_code" title="Preformatted Code (Ctrl+K or Tab/Shift+Tab on multiline selection)" tabindex=-1></a></li>\n';
+        str += '<li><span class="mdd_sep"></span></li>\n';
+        str += '<li><a href="#" class="mdd_button" id="mdd_bold" title="Bold (Ctrl+B)" tabindex=-1></a></li>\n';
+        str += '<li><a href="#" class="mdd_button" id="mdd_italic" title="Italic (Ctrl+I)" tabindex=-1></a></li>\n';
+        str += '<li><span class="mdd_sep"></span></li>\n';
+        str += '<li><a href="#" class="mdd_button" id="mdd_ullist" title="Bullets (Ctrl+U)" tabindex=-1></a></li>\n';
+        str += '<li><a href="#" class="mdd_button" id="mdd_ollist" title="Numbering (Ctrl+O)" tabindex=-1></a></li>\n';
+        str += '<li><a href="#" class="mdd_button" id="mdd_outdent" title="Unquote (Ctrl+W)" tabindex=-1></a></li>\n';
+        str += '<li><a href="#" class="mdd_button" id="mdd_indent" title="Quote (Ctrl+Q)" tabindex=-1></a></li>\n';
+        str += '<li><span class="mdd_sep"></span></li>\n';
+        str += '<li><a href="#" class="mdd_button" id="mdd_link" title="Insert Hyperlink (Ctrl+L)" tabindex=-1></a></li>\n';
+        str += '<li><a href="#" class="mdd_button" id="mdd_img" title="Insert Image (Ctrl+G)" tabindex=-1></a></li>\n';
+        str += '<li><a href="#" class="mdd_button" id="mdd_hr" title="Insert Horizontal Rule (Ctrl+R)" tabindex=-1></a></li>\n';
+        str += '</ul>\n';
+        str += '<div style="clear:both"></div>\n';
         return str;
     }
     
@@ -112,7 +113,23 @@ var MarkdownDeepEditorUI=new function(){
     
 	// Used to store the scroll position of the help
 	var scrollPos=0;
-	var contentLoaded=false;
+	var contentLoaded = false;
+	
+	this.onShowHidePreview=function(ev) {
+		var $button = $(ev.target)
+			, $toolbar = $button.closest(".mdd_toolbar_wrap")
+			, $editorUI = $toolbar.parent()
+			, $textbox = $editorUI.children(".mdd_editor_wrap")
+			, $resizer = $editorUI.find(".mdd_resizer")
+			, $preview = $editorUI.find(".mdd_preview");
+
+		var show = !$button.hasClass("aOn");
+		
+		$preview.css({ display: (show ? "block" : "none") });
+		$textbox.add($resizer).css({ display: (!show ? "block" : "none") });
+		$toolbar.find('ul .mdd_button').toggleClass("aOff", show);
+		$button.toggleClass("aOn", show).toggleClass("aOff", !show);
+	}
 
     // Show the popup modal help	
     this.onShowHelpPopup=function()
@@ -137,7 +154,7 @@ var MarkdownDeepEditorUI=new function(){
         {
             contentLoaded=true;
             
-            var help_location=$("#mdd_help_location").attr("href");
+            var help_location = $("#mdd_help_location").attr("href");
             if (!help_location)
                 help_location="mdd_help.htm";
                 
@@ -164,9 +181,14 @@ var MarkdownDeepEditorUI=new function(){
 	}
 	
 	// Toolbar click handler
-	this.onToolbarButton=function(e) {
+	this.onToolbarButton = function (e) {
+		var $button = $(e.target);
+		
+		// check if enable
+		if ($button.hasClass("aOff")) return;
+
 	    // Find the editor, grab the MarkdownEditor.Editor class from it's data
-	    var editor = $(e.target).closest("div.mdd_toolbar_wrap").next('.mdd_editor_wrap').children("textarea").data("mdd");
+		var editor = $button.closest("div.mdd_toolbar_wrap").next('.mdd_editor_wrap').children("textarea").data("mdd");
 	    
 	    // Invoke the command
         editor.InvokeCommand($(e.target).attr("id").substr(4));
@@ -222,6 +244,7 @@ Editor options/hooks:
 * disableShortCutKeys - boolean, disables Ctrl+key shortcuts (default:false)
 * disableAutoIndent - boolean, disables auto tab-indent on pressing enter (default:false)
 * disableTabHandling - boolean, disables tab key working in the editor (default:false)
+* shopwPreview - enum, indicates how will be show preview, values: "none" (preview not available), "toolbar" (preview can be shown with toolbar button), "show" (always shown) (default: "show")
 * onPreTransform=function(editor, markdown)
 * onPostTransform=function(editor, html)
 * onPostUpdateDom=function(editor)
@@ -308,7 +331,8 @@ How the associated UI components are located:
             // Stuff the toolbar with buttons!
             toolbar.append($(MarkdownDeepEditorUI.ToolbarHtml()));
 
-       	    $("a.mdd_button", toolbar).click(MarkdownDeepEditorUI.onToolbarButton);
+            $("a.mdd_button", toolbar).click(MarkdownDeepEditorUI.onToolbarButton);
+            $("a.mdd_togglepreview", toolbar).click(MarkdownDeepEditorUI.onShowHidePreview);
     	    $("a.mdd_help", toolbar).click(MarkdownDeepEditorUI.onShowHelpPopup);
     	    
     	    if (!MarkdownDeepEditorUI.HelpHtmlWritten)
@@ -347,15 +371,31 @@ How the associated UI components are located:
         //      1. Look for a selector as a data attribute on the textarea
         //      2. If not present, assume <div class="mdd_preview">
         //      3. If not found, append a div with that class
-        var preview_selector=$(this).attr("data-mdd-preview");
+        var preview_selector = $(this).attr("data-mdd-preview");
         if (!preview_selector)
-             preview_selector=".mdd_preview";
-        var preview=$(preview_selector)[0];
-        if (!preview)
-        {
-            $("<div class=\"mdd_preview\"></div>").insertAfter(resizer ? resizer : this);
-            preview=$(".mdd_preview")[0];
+        	preview_selector = ".mdd_preview";
+        var $preview = $(preview_selector)
+			, preview = $preview[0];
+        if (!preview) {
+        	$preview = $("<div class=\"mdd_preview\"></div>").insertAfter(resizer ? resizer : this);
+        	preview = $preview[0];
         }
+
+		// Show/hide preview
+        switch (settings.shopwPreview) {
+        	case "none":
+        		$preview.css({ display: "none" });
+        		break;
+        	case "toolbar":
+        		$preview.css({ display: 'none' });
+        		$("a.mdd_togglepreview", toolbar).removeClass('aHide').addClass('aOff');
+        		break;
+			case "show":
+        	default:
+        		// Nothing to do
+        		break;
+	    }
+
         
         // Create the editor helper
         var editor=new MarkdownDeepEditor.Editor(this, preview);

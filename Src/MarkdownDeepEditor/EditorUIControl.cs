@@ -26,11 +26,18 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 	/// <summary>
 	/// The WMD control for the Markdown Editor.
 	/// </summary>
-	public class WmdControl : WebControl {
+	public class EditorUIControl : WebControl {
+
 		/// <summary>
-		/// Initializes a new instance of the <see cref="WmdControl"/> class.
+		/// ClassName of editor
 		/// </summary>
-		public WmdControl() {
+		public const string EDITOR_CSS_CLASS_NAME = "Xilium_MarkdownDeepEditor";
+
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="EditorUIControl"/> class.
+		/// </summary>
+		public EditorUIControl() {
 			this.TextBoxControl = new TextBox();
 		}
 
@@ -73,7 +80,7 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 			base.OnLoad(e);
 
 			// check if WMD Editor has been enabled.
-			if (this.Options.EnableUIEditor) {
+			if (this.Options.EnableEditorUI) {
 				// adds the client dependencies.
 				this.AddResourceToClientDependency("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor.mdd_styles.css", ClientDependencyType.Css);
 				this.AddResourceToClientDependency("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor_custom.mdd_styles.css", ClientDependencyType.Css);
@@ -107,104 +114,42 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 		/// </summary>
 		/// <param name="writer">A <see cref="T:System.Web.UI.HtmlTextWriter"/> that represents the output stream to render HTML content on the client.</param>
 		protected override void RenderContents(HtmlTextWriter writer) {
-			writer.AddAttribute(HtmlTextWriterAttribute.Class, "MarkdownDeepTextBox");
+			writer.AddAttribute(HtmlTextWriterAttribute.Class, EDITOR_CSS_CLASS_NAME);
 			writer.AddAttribute(HtmlTextWriterAttribute.Style, string.Concat("width: ", this.Options.Width + 6, "px;"));
 			writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
 			this.TextBoxControl.RenderControl(writer);
 
-			writer.RenderEndTag(); // div.MarkdownDeepTextBox
+			writer.RenderEndTag(); // div.<EDITOR_CSS_CLASS_NAME>
 
 			// check if WMD Editor has been enabled.
-			if (this.Options.EnableUIEditor) {
-				switch (2) {
-					case 1:
-						const char QUOTE = '\'';
-						////const char COMMA = ',';
+			if (this.Options.EnableEditorUI) {
 
-						// set the MarkEdit options
-						var markeditOptions = new StringBuilder("{");
+				var strJS = new System.Text.StringBuilder();
+				strJS.Append("\n<script type=\"text/javascript\">");
+				strJS.Append("\njQuery(window).load(function() {");
+				strJS.Append("\n	var $ = jQuery;");
 
-						// history option
-						/*
-						if (!this.Options.EnableHistory) {
-							markeditOptions.Append("'history': false, ");
-						}
-						*/
+				// Set MarkdownDeep editor and options
+				strJS.Append("\n	var $textbox = $('#" + this.TextBoxControl.ClientID + "').MarkdownDeep({");
+				strJS.Append("\n		help_location: '" + this.GetWebResourceUrl("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor.mdd_help.html") + "'");
+				strJS.Append("\n		, SafeMode: " + this.Options.SafeMode.ToJson());
+				strJS.Append("\n		, ExtraMode: " + this.Options.ExtraMode.ToJson());
+				strJS.Append("\n		, MarkdownInHtml: " + this.Options.MarkdownInHtml.ToJson());
+				strJS.Append("\n		, AutoHeadingIDs: " + this.Options.AutoHeadingIDs.ToJson());
+				strJS.Append("\n		, NewWindowForExternalLinks: " + this.Options.NewWindowForExternalLinks.ToJson());
+				strJS.Append("\n		, NewWindowForLocalLinks: " + this.Options.NewWindowForLocalLinks.ToJson());
+				strJS.Append("\n		, NoFollowLinks: " + this.Options.NoFollowLinks.ToJson());
+				strJS.Append("\n		, disableAutoIndent: " + this.Options.DisableAutoIndent.ToJson());
+				strJS.Append("\n		, disableTabHandling: " + this.Options.DisableTabHandling.ToJson());
+				strJS.Append("\n		, shopwPreview: '" + this.Options.ShowPreview.ToString().ToLower() + "'");
+				strJS.Append("\n	});");
 
-						// preview option
-						/*
-						markeditOptions.Append("'preview': ");
-						if (!string.IsNullOrEmpty(this.Options.SelectedPreview)) {
-							markeditOptions
-								.Append(QUOTE)
-								.Append(this.Options.SelectedPreview)
-								.Append(QUOTE);
-						} else {
-							markeditOptions.Append("false");
-						}
-						*/
+				strJS.Append("\n});");
+				strJS.Append("\n</script>");
 
-						markeditOptions
-							.Append(", 'toolbar': { ")
-							.Append("'layout': 'bold italic | link quote code image | numberlist bulletlist heading line");
+				writer.WriteLine(strJS);
 
-						// reference the help button
-						/*
-						if (!string.IsNullOrEmpty(this.Options.HelpUrl)) {
-							markeditOptions.Append(" | help");
-						}
-						*/
-
-						markeditOptions
-							.Append("', ")
-							.Append("'buttons' : [ ");
-
-						// add the help button
-						/*
-						if (!string.IsNullOrEmpty(this.Options.HelpUrl)) {
-							markeditOptions
-								.Append("{ 'id' : 'help', 'css' : 'help', 'tip' : 'Markdown Syntax Help', 'click' : function(){ window.open('")
-								.Append(this.Options.HelpUrl)
-								.Append("'); }, 'mouseover' : function(){}, 'mouseout' : function(){} }");
-						}
-						*/
-
-						markeditOptions
-							.Append(" ] }")
-							.Append("}");
-
-						// add jquery window load event
-						var javascriptMethod = string.Format("jQuery('#{0}').markedit( {1} );", this.TextBoxControl.ClientID, markeditOptions);
-						var javascript = string.Concat("<script type='text/javascript'>jQuery(window).load(function(){", javascriptMethod, "});</script>");
-						writer.WriteLine(javascript);
-
-						break;
-					case 2:
-
-						var strJS = new System.Text.StringBuilder();
-						strJS.Append("\n<script type=\"text/javascript\">");
-						strJS.Append("\njQuery(window).load(function(){ $(\"#" + this.TextBoxControl.ClientID + "\").MarkdownDeep({");
-
-						// Set MarkdownDeep editor options
-						strJS.Append("help_location: \"" + this.GetWebResourceUrl("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor.mdd_help.html") + "\"");
-						strJS.Append(", SafeMode: \"" + this.Options.SafeMode.ToJson() + "\"");
-						strJS.Append(", ExtraMode: \"" + this.Options.ExtraMode.ToJson() + "\"");
-						strJS.Append(", MarkdownInHtml: \"" + this.Options.MarkdownInHtml.ToJson() + "\"");
-						strJS.Append(", AutoHeadingIDs: \"" + this.Options.AutoHeadingIDs.ToJson() + "\"");
-						strJS.Append(", NewWindowForExternalLinks: \"" + this.Options.NewWindowForExternalLinks.ToJson() + "\"");
-						strJS.Append(", NewWindowForLocalLinks: \"" + this.Options.NewWindowForLocalLinks.ToJson() + "\"");
-						strJS.Append(", NoFollowLinks: \"" + this.Options.NoFollowLinks.ToJson() + "\"");
-						strJS.Append(", disableAutoIndent: \"" + this.Options.DisableAutoIndent.ToJson() + "\"");
-						strJS.Append(", disableTabHandling: \"" + this.Options.DisableTabHandling.ToJson() + "\"");
-
-						strJS.Append(" }); });");
-						strJS.Append("\n</script>");
-
-						writer.WriteLine(strJS);
-
-						break;
-				}
 				
 			}
 		}

@@ -74,14 +74,11 @@
     <Compile Include="Extensions\PrevalueEditorExtensions.cs" />
     <Compile Include="Extensions\ResourceExtensions.cs" />
     <Compile Include="Options.cs" />
-    <Compile Include="WmdControl.cs" />
+    <Compile Include="EditorUIControl.cs" />
     <Compile Include="XmlData.cs" />
     <Compile Include="DataEditor.cs" />
     <Compile Include="PrevalueEditor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources_OLD\Styles\PrevalueEditor.css" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\MDDEditor\MarkdownDeep.js" />
@@ -95,35 +92,6 @@
     <EmbeddedResource Include="Resources\MDDEditor\mdd_toolbar.png" />
     <EmbeddedResource Include="Resources\MDDEditor_custom\mdd_styles.css" />
     <EmbeddedResource Include="Resources\PrevalueEditor\style.css" />
-    <Content Include="Resources_OLD\MarkEdit\examples\basic.html" />
-    <Content Include="Resources_OLD\MarkEdit\examples\dark-theme.html" />
-    <Content Include="Resources_OLD\MarkEdit\examples\flickr-image-gallery.html" />
-    <Content Include="Resources_OLD\MarkEdit\examples\in-chinese.html" />
-    <Content Include="Resources_OLD\MarkEdit\examples\in-place-editing-with-preview.html" />
-    <Content Include="Resources_OLD\MarkEdit\examples\in-place-editing.html" />
-    <Content Include="Resources_OLD\MarkEdit\examples\multiple-editors.html" />
-    <Content Include="Resources_OLD\MarkEdit\examples\multiple-preview-panes.html" />
-    <Content Include="Resources_OLD\MarkEdit\images\wmd-buttons-dark.png" />
-    <EmbeddedResource Include="Resources_OLD\MarkEdit\images\wmd-buttons.png" />
-    <EmbeddedResource Include="Resources_OLD\MarkEdit\jquery.markedit.css" />
-    <EmbeddedResource Include="Resources_OLD\MarkEdit\jquery.markedit.js" />
-    <Content Include="Resources_OLD\MarkEdit\lang\markedit.lang.de.js" />
-    <Content Include="Resources_OLD\MarkEdit\lang\markedit.lang.es.js" />
-    <Content Include="Resources_OLD\MarkEdit\lang\markedit.lang.template.js" />
-    <Content Include="Resources_OLD\MarkEdit\lang\markedit.lang.zh.js" />
-    <Content Include="Resources_OLD\MarkEdit\mit license.txt" />
-    <Content Include="Resources_OLD\MarkEdit\readme.txt" />
-    <EmbeddedResource Include="Resources_OLD\MarkEdit\showdown.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources_OLD\MarkEdit\images\wmd-buttons-dark.psd" />
-    <None Include="Resources_OLD\MarkEdit\images\wmd-buttons.psd" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\MarkdownDeepEditor.Helpers\MarkdownDeepEditor.Helpers.csproj">
-      <Project>{eacd1567-d831-4c99-a3ff-990e1da3108e}</Project>
-      <Name>MarkdownDeepEditor.Helpers</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

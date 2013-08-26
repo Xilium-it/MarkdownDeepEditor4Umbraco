@@ -46,11 +46,6 @@
 
 	<!-- MERGE DLLS -->
 	<Target Name="MergeDlls" DependsOnTargets="Compile">
-		<ItemGroup>
-			<Dlls Include="$(ReleaseDir)\Xilium.MarkdownDeepEditor4Umbraco.Helpers.dll" />
-			<Dlls Include="$(ReleaseDir)\HtmlToMarkdown.dll" />
-		</ItemGroup>
-		<Exec Command="&quot;$(ILMergeExe)&quot; /ndebug /internalize /out:&quot;$(ReleaseDir)\Xilium.MarkdownDeepEditor4Umbraco.Helpers.dll&quot; &quot;@(Dlls, '&quot; &quot;')&quot;" />
 	</Target>
 	
 	<!-- PREPARE FILES -->
@@ -58,7 +53,6 @@
 		<ItemGroup>
 			<BinFiles Include="$(RootDir)\bin\Release\Xilium.MarkdownDeep.dll" />
 			<BinFiles Include="$(RootDir)\bin\Release\Xilium.MarkdownDeepEditor4Umbraco.dll" />
-			<BinFiles Include="$(RootDir)\bin\Release\Xilium.MarkdownDeepEditor4Umbraco.Helpers.dll" />
 			<PackageFile Include="$(MSBuildProjectDirectory)\package.xml" />
 		</ItemGroup>
 		<Copy SourceFiles="@(BinFiles)" DestinationFolder="$(BuildDir)\bin" />

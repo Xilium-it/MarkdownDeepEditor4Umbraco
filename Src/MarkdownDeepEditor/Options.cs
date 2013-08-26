@@ -18,7 +18,7 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 		/// <param name="loadDefaults">if set to <c>true</c> [load defaults].</param>
 		public Options(bool loadDefaults) {
 			if (loadDefaults) {
-				this.EnableUIEditor = true;
+				this.EnableEditorUI = true;
 				this.Width = 600;
 				this.Height = 400;
 				this.OutputFormat = OutputFormats.HTML;
@@ -39,11 +39,11 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 
 
 		/// <summary>
-		/// Gets or sets a value indicating whether [enable UI Editor].
+		/// Gets or sets a value indicating whether [enable EditorUI].
 		/// </summary>
-		/// <value><c>true</c> if [enable UI Editor]; otherwise, <c>false</c>.</value>
+		/// <value><c>true</c> if [enable EditorUI]; otherwise, <c>false</c>.</value>
 		[DefaultValue(true)]
-		public bool EnableUIEditor { get; set; }
+		public bool EnableEditorUI { get; set; }
 
 		/// <summary>
 		/// Gets or sets the width.
@@ -164,7 +164,7 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 			/// <summary>
 			/// Show preview below editor
 			/// </summary>
-			Below = 2
+			Show = 2
 		}
 
 	}

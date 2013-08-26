@@ -1,4 +1,5 @@
 ﻿using System;
+using Xilium.MarkdownDeepEditor4Umbraco.TextFormatter;
 using umbraco.cms.businesslogic.datatype;
 using umbraco.interfaces;
 
@@ -10,7 +11,7 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 		/// <summary>
 		/// The WMD/Markdown control.
 		/// </summary>
-		private WmdControl m_Control = new WmdControl();
+		private EditorUIControl m_Control = new EditorUIControl();
 
 		/// <summary>
 		/// The Data object for the data-type.
@@ -28,6 +29,11 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 		private PrevalueEditor m_PreValueEditor;
 
 		/// <summary>
+		/// The TextFormatter object that will be the text transform to HTML.
+		/// </summary>
+		private TextFormatter.TextFormatterBase m_TextFormatter;
+
+		/// <summary>
 		/// Initializes a new instance of the <see cref="DataEditor"/> class.
 		/// </summary>
 		public DataEditor()
@@ -40,6 +46,8 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 
 			// assign the save event for the data-type/editor
 			this.DataEditorControl.OnSave += new AbstractDataEditorControl.SaveEventHandler(this.DataEditorControl_OnSave);
+
+			this.m_TextFormatter = null;
 		}
 
 		/// <summary>
@@ -96,6 +104,18 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 				}
 
 				return this.m_Options;
+			}
+		}
+
+		/// <summary>
+		/// Gets the TextFormatter object
+		/// </summary>
+		public TextFormatter.TextFormatterBase TextFormatter {
+			get {
+				if (this.m_TextFormatter == null) {
+					this.m_TextFormatter = TextFormatterDriver.CreateDefaultTextFormatterInstance(this, this.Options);
+				}
+				return this.m_TextFormatter;
 			}
 		}
 

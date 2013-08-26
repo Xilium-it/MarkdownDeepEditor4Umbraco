@@ -1,5 +1,5 @@
 ﻿The "MarkdownDeep Editor for Umbraco" is a data-type that allows you to write your content using MarkdownDeep syntax.
-Configuration options are available to enable/disable the WMD Editor (powered by MarkEdit).
+Configuration options are available to enable/disable the EditorUI.
 
 This package is a fork of "Markdown Editor for Umbraco" developed by "leekelleher" (visit http://markdown4umb.codeplex.com/).
 

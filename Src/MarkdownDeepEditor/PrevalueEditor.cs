@@ -32,7 +32,7 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 		/// <summary>
 		/// The CheckBox for enabling the WMD Editor.
 		/// </summary>
-		private CheckBox EnableUIEditor;
+		private CheckBox EnableEditorUI;
 
 		/// <summary>
 		/// The RadioButtonList for the preview settings.
@@ -161,7 +161,7 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 			this.NewWindowForLocalLinks.Checked = this.Options.NewWindowForLocalLinks;
 			this.NoFollowLinks.Checked = this.Options.NoFollowLinks;
 
-			this.EnableUIEditor.Checked = this.Options.EnableUIEditor;
+			this.EnableEditorUI.Checked = this.Options.EnableEditorUI;
 			this.DisableAutoIndent.Checked = this.Options.DisableAutoIndent;
 			this.DisableTabHandling.Checked = this.Options.DisableTabHandling;
 			this.ShowPreview.SelectedValue = this.Options.ShowPreview.ToString();
@@ -190,7 +190,7 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 			this.Options.NewWindowForLocalLinks = this.NewWindowForLocalLinks.Checked;
 			this.Options.NoFollowLinks = this.NoFollowLinks.Checked;
 
-			this.Options.EnableUIEditor = this.EnableUIEditor.Checked;
+			this.Options.EnableEditorUI = this.EnableEditorUI.Checked;
 
 			this.Options.DisableAutoIndent = this.DisableAutoIndent.Checked;
 			this.Options.DisableTabHandling = this.DisableTabHandling.Checked;
@@ -282,7 +282,7 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 			this.DisableAutoIndent = new CheckBox() { ID = "DisableAutoIndent", Text = "Disable auto-indent (disables auto tab-indent on pressing enter)" };
 			this.DisableTabHandling = new CheckBox() { ID = "DisableTabHandling", Text = "Disable tab-handling (disables tab key working in the editor)" };
 
-			this.EnableUIEditor = new CheckBox() { ID = "EnableUIEditor", Text = "yes, enable UI Editor with toolbar" };
+			this.EnableEditorUI = new CheckBox() { ID = "EnableEditorUI", Text = "yes, enable EditorUI with toolbar" };
 			this.ShowPreview = new RadioButtonList() { ID = "ShowPreview", RepeatDirection = RepeatDirection.Vertical, RepeatLayout = RepeatLayout.Flow };
 
 			// populate the controls
@@ -299,7 +299,7 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 			{
 				new ListItem("None - No preview will appear", Options.ShowPreviewOptions.None.ToString()),
 				new ListItem("Toolbar - Adds Compose/Preview toggle buttons to the toolbar (default)", Options.ShowPreviewOptions.Toolbar.ToString()),
-				new ListItem("Below - Auto-updated preview to appear below the editor", Options.ShowPreviewOptions.Below.ToString())
+				new ListItem("Show - Auto-updated preview to appear below the editor", Options.ShowPreviewOptions.Show.ToString())
 			};
 			this.ShowPreview.Items.AddRange(items);
 
@@ -318,7 +318,7 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 			this.Controls.Add(this.DisableAutoIndent);
 			this.Controls.Add(this.DisableTabHandling);
 
-			this.Controls.Add(this.EnableUIEditor);
+			this.Controls.Add(this.EnableEditorUI);
 			this.Controls.Add(this.ShowPreview);
 		}
 
@@ -361,12 +361,12 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 				, this.NewWindowForLocalLinks
 				, this.NoFollowLinks);
 
-			writer.AddPrevalueRow("Enable UI editor:", this.EnableUIEditor);
+			writer.AddPrevalueRow("Enable EditorUI:", this.EnableEditorUI);
 
-			writer.AddPrevalueRow(string.Empty, "<hr/>The following options are only applicable when the UI editor is enabled.");
+			writer.AddPrevalueRow(string.Empty, "<hr/>The following options are only applicable when the EditorUI is enabled.");
 			writer.AddPrevalueRow("Show preview:", this.ShowPreview);
 
-			writer.AddPrevalueRow("UI editor options:"
+			writer.AddPrevalueRow("EditorUI options:"
 				, this.DisableAutoIndent
 				, this.DisableTabHandling);
 		}
