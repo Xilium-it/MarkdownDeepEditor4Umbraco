@@ -13,13 +13,13 @@ colspan and head-style sttributes to any table cell.
 
 MarkdownDeep Editor allow detailed level of customization. You can enable/disable:
 
-* safeMode
-* extraMode
-* markdownInHtml
-* autoHeadingIDs
-* newWindowForExternalLinks
-* newWindowForLocalLinks
-* noFollowLinks
+* **safeMode**: only safe markup
+* **extraMode**: enables MarkdownExtra extensions
+* **markdownInHtml**: allow markdown syntax in nested html
+* **autoHeadingIDs**: automatically generate IDs for headings
+* **newWindowForExternalLinks**: new window for external links (target=_blank)
+* **newWindowForLocalLinks**: new window for local links (target=_blank)
+* **noFollowLinks**: add rel=nofollow to all external links
 
 
 It is possibile to utilize custom Markdown formatter developing a class in `App_Code` folder. This class will be
