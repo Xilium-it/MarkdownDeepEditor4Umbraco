@@ -4,7 +4,7 @@
 	<info>
 		<package>
 			<name>MarkdownDeep Editor</name>
-			<version>2.0</version>
+			<version>2.0.0</version>
 			<license url="http://www.opensource.org/licenses/mit-license.php">MIT license</license>
 			<url>http://our.umbraco.org/projects/backoffice-extensions/markdowndeep-editor</url>
 			<requirements>
@@ -28,7 +28,7 @@
 	<DataTypes>
 		<DataType Name="MarkdownDeep Editor" Id="86C1F03D-0AD8-464B-9CFD-B360839CA184" Definition="2E5D50F7-782A-4C67-ACFA-D132BE4EE22C">
 			<PreValues>
-				<PreValue Id="8" Value="{&quot;EnableHistory&quot;:true,&quot;EnableWmd&quot;:true,&quot;Height&quot;:400,&quot;HelpUrl&quot;:&quot;http://daringfireball.net/projects/markdown/syntax&quot;,&quot;OutputFormat&quot;:&quot;0&quot;,&quot;SelectedPreview&quot;:&quot;toolbar&quot;,&quot;Width&quot;:525}" />
+				<PreValue Id="8" Value="{&quot;Width&quot;:600,&quot;Height&quot;:400}" />
 			</PreValues>
 		</DataType>
 	</DataTypes>
