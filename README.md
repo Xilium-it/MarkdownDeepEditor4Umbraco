@@ -39,23 +39,32 @@ Example:
 			: base(dataEditor, options) {
 
 			this._instance = new Xilium.MarkdownDeep.Markdown();
-			this._instance.SafeMode = this.Options.SafeMode;
-			this._instance.ExtraMode = this.Options.ExtraMode;
+			this._instance.SafeMode = true;
+			this._instance.ExtraMode = false;
 			this._instance.MarkdownInHtml = this.Options.MarkdownInHtml;
-			this._instance.AutoHeadingIDs = this.Options.AutoHeadingIDs;
-			this._instance.NewWindowForExternalLinks = this.Options.NewWindowForExternalLinks;
-			this._instance.NewWindowForLocalLinks = this.Options.NewWindowForLocalLinks;
-			this._instance.NoFollowLinks = this.Options.NoFollowLinks;
 		}
 
 		public override string Transform(string value) {
 			return this._instance.Transform(value);
 		}
-
 	}
 
 ```
 
+## News in 2.1.0 revision:
+
+### features
+
+* add default css file to render Preview area. It defines titles, paragraph and tables tag.
+* add setting option to define custom className for Editor control.
+* add setting option to define custom css file to import for define custom Preview.
+
+### issues
+
+* preview don't works properly when there are more then 1 instance.
+ 
+ 
+## MarkdownDeep syntax
 
 For a reference to MarkdownDeep and its syntax please visit: [MarkdownDeep project](https://github.com/Xilium-it/MarkdownDeep)
 
