@@ -23,12 +23,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Package", "Build Pack
 		Build\readme.txt = Build\readme.txt
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HtmlToMarkdown", "HtmlToMarkdown", "{BF564731-1B49-47EC-AD06-00ACC8638F61}"
-	ProjectSection(SolutionItems) = preProject
-		Lib\HtmlToMarkdown\compile.cmd = Lib\HtmlToMarkdown\compile.cmd
-		Lib\HtmlToMarkdown\HtmlToMarkdown.xslt = Lib\HtmlToMarkdown\HtmlToMarkdown.xslt
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +40,5 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{A480D713-775F-4888-A7DC-A950CF6535AF} = {7AB37D7B-B55D-4A99-B9BB-D9C26BB13D24}
 		{81AA2D33-CAD4-4D63-9293-977ED6C66716} = {7AB37D7B-B55D-4A99-B9BB-D9C26BB13D24}
-		{BF564731-1B49-47EC-AD06-00ACC8638F61} = {7AB37D7B-B55D-4A99-B9BB-D9C26BB13D24}
 	EndGlobalSection
 EndGlobal

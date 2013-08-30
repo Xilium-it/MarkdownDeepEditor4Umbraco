@@ -237,4 +237,4 @@ div.mdd_resizer
 	cursor:n-resize;
 }
 
-.mdd_preview	{ border:1px solid #d0d0d0; margin-top:-1px; background:#f4faff; }
+.mdd_preview	{ border:1px solid #d0d0d0; margin-top:-1px; min-height:100px; }

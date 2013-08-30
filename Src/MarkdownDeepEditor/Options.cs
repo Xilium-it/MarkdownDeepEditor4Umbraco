@@ -23,6 +23,9 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 				this.Height = 400;
 				this.OutputFormat = OutputFormats.HTML;
 				this.ShowPreview = ShowPreviewOptions.Toolbar;
+				this.ShowPreviewWithDefaultCssFile = true;
+				this.ShowPreviewWithCustomClassName = "";
+				this.ShowPreviewWithCustomCssFile = "";
 
 				this.SafeMode = false;
 				this.ExtraMode = true;
@@ -72,6 +75,24 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 		/// <value>The selected preview.</value>
 		[DefaultValue(ShowPreviewOptions.Toolbar)]
 		public ShowPreviewOptions ShowPreview { get; set; }
+
+		/// <summary>
+		/// Includes default css style for preview rendering.
+		/// </summary>
+		[DefaultValue(true)]
+		public bool ShowPreviewWithDefaultCssFile { get; set; }
+
+		/// <summary>
+		/// Add ClassName to EditorUI control to customize preview style.
+		/// </summary>
+		[DefaultValue("")]
+		public string ShowPreviewWithCustomClassName { get; set; }
+
+		/// <summary>
+		/// Specify url of local or remote file to include to customize preview style.
+		/// </summary>
+		[DefaultValue("")]
+		public string ShowPreviewWithCustomCssFile { get; set; }
 
 		/// <summary>
 		/// enable only safe markup (default:false)

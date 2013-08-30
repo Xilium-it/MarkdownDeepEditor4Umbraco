@@ -40,6 +40,21 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 		private RadioButtonList ShowPreview;
 
 		/// <summary>
+		/// Includes default css style for preview rendering.
+		/// </summary>
+		private CheckBox ShowPreviewWithDefaultCssFile;
+
+		/// <summary>
+		/// Add ClassName to EditorUI control to customize preview style.
+		/// </summary>
+		private TextBox ShowPreviewWithCustomClassName;
+
+		/// <summary>
+		/// Specify url of local or remote file to include to customize preview style.
+		/// </summary>
+		private TextBox ShowPreviewWithCustomCssFile;
+
+		/// <summary>
 		/// The RadioButtonList for the output formats.
 		/// </summary>
 		private RadioButtonList OutputFormats;
@@ -165,6 +180,9 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 			this.DisableAutoIndent.Checked = this.Options.DisableAutoIndent;
 			this.DisableTabHandling.Checked = this.Options.DisableTabHandling;
 			this.ShowPreview.SelectedValue = this.Options.ShowPreview.ToString();
+			this.ShowPreviewWithDefaultCssFile.Checked = this.Options.ShowPreviewWithDefaultCssFile;
+			this.ShowPreviewWithCustomClassName.Text = this.Options.ShowPreviewWithCustomClassName;
+			this.ShowPreviewWithCustomCssFile.Text = this.Options.ShowPreviewWithCustomCssFile;
 		}
 
 		/// <summary>
@@ -196,6 +214,9 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 			this.Options.DisableTabHandling = this.DisableTabHandling.Checked;
 
 			this.Options.ShowPreview = this.ShowPreview.SelectedValue.ParseToEnum<Options.ShowPreviewOptions>(this.Options.ShowPreview);
+			this.Options.ShowPreviewWithDefaultCssFile = this.ShowPreviewWithDefaultCssFile.Checked;
+			this.Options.ShowPreviewWithCustomClassName = this.ShowPreviewWithCustomClassName.Text.Replace('.', ' ').Replace("  ", " ").Trim();
+			this.Options.ShowPreviewWithCustomCssFile = this.ShowPreviewWithCustomCssFile.Text;
 
 			// save the options as JSON
 			this.SaveAsJson();
@@ -284,6 +305,9 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 
 			this.EnableEditorUI = new CheckBox() { ID = "EnableEditorUI", Text = "yes, enable EditorUI with toolbar" };
 			this.ShowPreview = new RadioButtonList() { ID = "ShowPreview", RepeatDirection = RepeatDirection.Vertical, RepeatLayout = RepeatLayout.Flow };
+			this.ShowPreviewWithDefaultCssFile = new CheckBox() { ID = "ShowPreviewWithDefaultCssFile", Text = "Load default style (load default css file to render preview area)" };
+			this.ShowPreviewWithCustomClassName = new TextBox() { ID = "ShowPreviewWithCustomClassName", CssClass = "guiInputText" };
+			this.ShowPreviewWithCustomCssFile = new TextBox() { ID = "ShowPreviewWithCustomCssFile", CssClass = "guiInputText guiInputStandardSize" };
 
 			// populate the controls
 
@@ -320,6 +344,9 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 
 			this.Controls.Add(this.EnableEditorUI);
 			this.Controls.Add(this.ShowPreview);
+			this.Controls.Add(this.ShowPreviewWithDefaultCssFile);
+			this.Controls.Add(this.ShowPreviewWithCustomClassName);
+			this.Controls.Add(this.ShowPreviewWithCustomCssFile);
 		}
 
 		/// <summary>
@@ -348,10 +375,14 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 		/// <param name="writer">A <see cref="T:System.Web.UI.HtmlTextWriter"/> that represents the output stream to render HTML content on the client.</param>
 		protected override void RenderContents(HtmlTextWriter writer) {
 			// add property fields
+
+			writer.OpenPrevalueGroup("General settings");
 			writer.AddPrevalueRow("Editor width:", this.TextBoxWidth);
 			writer.AddPrevalueRow("Editor height:", this.TextBoxHeight);
 			writer.AddPrevalueRow("Output Format:", this.OutputFormats);
+			writer.ClosePrevalueGroup();
 
+			writer.OpenPrevalueGroup("Markdown");
 			writer.AddPrevalueRow("Transform options:"
 				, this.SafeMode
 				, this.ExtraMode
@@ -360,15 +391,21 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 				, this.NewWindowForExternalLinks
 				, this.NewWindowForLocalLinks
 				, this.NoFollowLinks);
+			writer.ClosePrevalueGroup();
 
+			writer.OpenPrevalueGroup("EditorUI");
 			writer.AddPrevalueRow("Enable EditorUI:", this.EnableEditorUI);
-
-			writer.AddPrevalueRow(string.Empty, "<hr/>The following options are only applicable when the EditorUI is enabled.");
-			writer.AddPrevalueRow("Show preview:", this.ShowPreview);
-
-			writer.AddPrevalueRow("EditorUI options:"
+			writer.AddPrevalueRow("Options:"
 				, this.DisableAutoIndent
 				, this.DisableTabHandling);
+			writer.ClosePrevalueGroup();
+
+			writer.OpenPrevalueGroup("EditorUI preview");
+			writer.AddPrevalueRow("Show preview:", this.ShowPreview);
+			writer.AddPrevalueRow("CSS style", this.ShowPreviewWithDefaultCssFile);
+			writer.AddPrevalueRow("Add ClassName", "it is usefull to customize preview style with custom css", this.ShowPreviewWithCustomClassName);
+			writer.AddPrevalueRow("Add custom CSS", "custom css file to customize preview style; must be valid href value; example: \"/css/umbEditor/mdd_preview.css\"", this.ShowPreviewWithCustomCssFile);
+			writer.ClosePrevalueGroup();
 		}
 	}
 }

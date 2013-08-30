@@ -2,21 +2,28 @@
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace Xilium.MarkdownDeepEditor4Umbraco.Extensions
-{
+namespace Xilium.MarkdownDeepEditor4Umbraco.Extensions {
 	/// <summary>
 	/// Extension methods for the Prevalue Editor
 	/// </summary>
-	public static class PrevalueEditorExtensions
-	{
+	public static class PrevalueEditorExtensions {
+
+		public static void OpenPrevalueGroup(this HtmlTextWriter writer, string label) {
+			writer.Write("<fieldset><legend>{0}</legend>", System.Web.HttpUtility.HtmlEncode(label));
+		}
+
+		public static void ClosePrevalueGroup(this HtmlTextWriter writer) {
+			writer.Write("</fieldset>");
+		}
+
+
 		/// <summary>
 		/// Adds a new row to the Prevalue Editor.
 		/// </summary>
 		/// <param name="writer">The HtmlTextWriter.</param>
 		/// <param name="label">The label for the field.</param>
 		/// <param name="controls">The controls for the field.</param>
-		public static void AddPrevalueRow(this HtmlTextWriter writer, string label, params Control[] controls)
-		{
+		public static void AddPrevalueRow(this HtmlTextWriter writer, string label, params Control[] controls) {
 			writer.AddPrevalueRow(label, string.Empty, controls);
 		}
 
@@ -27,8 +34,7 @@ namespace Xilium.MarkdownDeepEditor4Umbraco.Extensions
 		/// <param name="label">The label for the field.</param>
 		/// <param name="description">The description for the field.</param>
 		/// <param name="controls">The controls for the field.</param>
-		public static void AddPrevalueRow(this HtmlTextWriter writer, string label, string description, params Control[] controls)
-		{
+		public static void AddPrevalueRow(this HtmlTextWriter writer, string label, string description, params Control[] controls) {
 			writer.AddAttribute(HtmlTextWriterAttribute.Class, "row clearfix");
 			writer.RenderBeginTag(HtmlTextWriterTag.Div); // start 'row'
 
@@ -44,8 +50,7 @@ namespace Xilium.MarkdownDeepEditor4Umbraco.Extensions
 			writer.RenderBeginTag(HtmlTextWriterTag.Div); // start 'field'
 
 			int controlsCount = 0;
-			foreach (Control control in controls)
-			{
+			foreach (Control control in controls) {
 				if (controlsCount > 0) writer.Write("<br/>");
 				control.RenderControl(writer);
 				controlsCount++;
@@ -53,8 +58,7 @@ namespace Xilium.MarkdownDeepEditor4Umbraco.Extensions
 
 			writer.RenderEndTag(); // end 'field'
 
-			if (!string.IsNullOrEmpty(description))
-			{
+			if (!string.IsNullOrEmpty(description)) {
 				writer.AddAttribute(HtmlTextWriterAttribute.Class, "description");
 				writer.RenderBeginTag(HtmlTextWriterTag.Div); // start 'description'
 

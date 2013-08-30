@@ -1,0 +1,26 @@
+﻿.mdd_preview	{
+	background:#f4faff; font-size:12px; font-family:helvetica, verdana; 
+	-webkit-box-sizing:border-box; -moz-box-sizing:border-box; box-sizing:border-box;
+	padding:0.4em 2em;
+}
+
+.mdd_preview h1
+, .mdd_preview h2
+, .mdd_preview h3
+, .mdd_preview h4
+, .mdd_preview h5
+, .mdd_preview h6		{ margin:1em 0 0.6em; font-weight:bold; }
+
+.mdd_preview h1		{ font-size:2em; }
+.mdd_preview h2		{ font-size:1.33em; }
+.mdd_preview h3		{ font-size:1.15em; }
+.mdd_preview h4		{ font-size:1.06em; }
+.mdd_preview h5		{ font-size:0.9em; font-style:italic; }
+.mdd_preview h6		{ font-size:0.7em; font-style:italic; }
+
+.mdd_preview p		{ font-size:1em; margin:1em 0; }
+
+.mdd_preview table	{ font-size:0.9em; margin:1.2em 0; text-align:inherit; }
+.mdd_preview td			{ background-color: #ddd; }
+.mdd_preview th			{ background-color: #aca; font-weight: bold; }
+.mdd_preview thead th	{ background-color: #447; color: white; font-weight: bold; font-size:110%; }

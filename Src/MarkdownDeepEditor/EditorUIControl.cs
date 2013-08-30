@@ -15,6 +15,7 @@ using Xilium.MarkdownDeepEditor4Umbraco.Extensions;
 [assembly: WebResource("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor.MarkdownDeepEditor.js", "application/x-javascript")]
 [assembly: WebResource("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor.MarkdownDeepEditorUI.js", "application/x-javascript")]
 [assembly: WebResource("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor.mdd_styles.css", "text/css")]
+[assembly: WebResource("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor.mdd_preview.css", "text/css")]
 [assembly: WebResource("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor.mdd_ajax_loader.gif", "image/gif")]
 [assembly: WebResource("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor.mdd_gripper.png", "image/png")]
 [assembly: WebResource("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor.mdd_modal_background.png", "image/png")]
@@ -87,6 +88,13 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 				this.AddResourceToClientDependency("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor.MarkdownDeep.js", ClientDependencyType.Javascript);
 				this.AddResourceToClientDependency("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor.MarkdownDeepEditor.js", ClientDependencyType.Javascript);
 				this.AddResourceToClientDependency("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor.MarkdownDeepEditorUI.js", ClientDependencyType.Javascript);
+				// Add preview css style
+				if (this.Options.ShowPreviewWithDefaultCssFile) {
+					this.AddResourceToClientDependency("Xilium.MarkdownDeepEditor4Umbraco.Resources.MDDEditor.mdd_preview.css", ClientDependencyType.Css);
+				}
+				if (string.IsNullOrEmpty(this.Options.ShowPreviewWithCustomCssFile) == false) {
+					this.Page.Header.Controls.Add(new LiteralControl(string.Format("<link type='text/css' rel='stylesheet' href='{0}'/>", this.Options.ShowPreviewWithCustomCssFile)));
+				}
 			}
 		}
 
@@ -114,7 +122,10 @@ namespace Xilium.MarkdownDeepEditor4Umbraco {
 		/// </summary>
 		/// <param name="writer">A <see cref="T:System.Web.UI.HtmlTextWriter"/> that represents the output stream to render HTML content on the client.</param>
 		protected override void RenderContents(HtmlTextWriter writer) {
-			writer.AddAttribute(HtmlTextWriterAttribute.Class, EDITOR_CSS_CLASS_NAME);
+			string ctrlClassName = EDITOR_CSS_CLASS_NAME;
+			if (string.IsNullOrEmpty(this.Options.ShowPreviewWithCustomClassName) == false) ctrlClassName += " " + this.Options.ShowPreviewWithCustomClassName;
+
+			writer.AddAttribute(HtmlTextWriterAttribute.Class, ctrlClassName);
 			writer.AddAttribute(HtmlTextWriterAttribute.Style, string.Concat("width: ", this.Options.Width + 6, "px;"));
 			writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
