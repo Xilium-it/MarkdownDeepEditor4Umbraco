@@ -51,7 +51,7 @@ Example:
 
 ```
 
-## News in 2.1.0 revision:
+## News in 2.1.0 version:
 
 ### features
 
@@ -62,7 +62,11 @@ Example:
 ### issues
 
 * preview don't works properly when there are more then 1 instance.
- 
+
+## News in 2.1.1 version:
+
+* updated Xilium.MarkdownDeep.dll to last version
+
  
 ## MarkdownDeep syntax
 
